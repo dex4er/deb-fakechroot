@@ -1,3 +1,68 @@
+fakechroot (0.9+1.3) unstable; urgency=medium
+
+  * Clean up the code - no static variables.
+  * narrow_chroot_path(path) macro returns original path if it is outside
+    chroot so getcwd(2) works for /dev and /proc.
+  * Implement lutimes(2) function.
+  * Fixed path for biarch libraries on sparc and amd64.
+  * Updated ldd.fake script. Now works on biarch systems.
+  * Biarch support for s390.
+  * Updated documentation.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Mon, 20 Jun 2005 10:04:24 +0200
+
+fakechroot (0.8+1.3) unstable; urgency=medium
+
+  * Merged with fakeroot 1.3.
+  * chroot(2) function includes default path to LD_LIBRARY_PATH.
+  * Fixed scandir64(3) function.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Tue, 14 Jun 2005 16:20:12 +0200
+
+fakechroot (0.7+1.2.4) unstable; urgency=low
+
+  * Implement wrapper for scandir(3) function. Now, the run-parts(8) works
+    correctly. Closes: #312409.
+  * Implement wrapper for glob(3) functions. Thanks to ALT Linux guys.
+  * Implement wrapper for glob_pattern_p(3) functions.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Tue, 14 Jun 2005 11:56:47 +0200
+
+fakechroot (0.6+1.2.4) unstable; urgency=low
+
+  * Implement wrappers for mkstemp64 and mkdtemp functions.
+  * Clean up the code.
+  * Fix ldd.fake script.
+  * Modified path for debootstrap.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Sat,  5 Feb 2005 20:36:56 +0100
+
+fakechroot (0.5+1.2.4) unstable; urgency=low
+
+  * Fix mkstemp(2) function. Some other cleanups to the code.
+  * Relative paths to the fakechroot script.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Fri,  4 Feb 2005 17:20:26 +0100
+
+fakechroot (0.4+1.2.4) unstable; urgency=low
+
+  * Implement wrappers for <sys/xattr.h>.
+  * Build with faked named as fakechrootd.
+  * fakeroot package is not necessary to run fakechroot.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Fri,  4 Feb 2005 15:35:17 +0100
+
+fakechroot (0.3+1.2.4) unstable; urgency=low
+
+  * Merged with fakeroot 1.2.4 and fakechroot 0.2.6.1 (downloaded from
+    http://www.altlinux.org/). Thanks to ALT Linux guys for maintaining
+    the code.
+  * Patch updated to the latest debootstrap. Closes: #247199.
+  * Fixed typo in package description. Closes: #252503.
+  * The new version builds with gcc-3.4. Closes: #258855.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Thu,  3 Feb 2005 12:38:54 +0100
+
 fakechroot (0.2.6+0.7.8) unstable; urgency=low
 
   * Merged with fakeroot 0.7.8.

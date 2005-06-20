@@ -1,12 +1,29 @@
-# $Id: packages,v 1.11 2003/09/30 15:59:47 dexter Exp $
+# $Id: /trunk/debian/packages 69 2005-06-20T08:50:23.660117Z dexter  $
+
+# If the debian/rules or debian/control file is missing, rebuild the file:
+#
+#   $ yada rebuild control
+#   $ yada rebuild rules
 
 # Environment variables:
 #   with_test=%{$with_test}  - build with check test
 
 %define with_test %{?$with_test:1}%{!?$with_test:0}
+%define without_test %{!?with_test:1}%{?with_test:0}
 
-%define fakeroot_version 0.7.8
+# Macro switches:
+#   with_test=%{with_test} without_test=%{without_test}
+
 %define automake_version 1.7
+%define DEB_HOST_GNU_SYSTEM %`dpkg-architecture -qDEB_HOST_GNU_SYSTEM`
+%define fakechroot_sysv_altprio %`if [ "$(dpkg-architecture -qDEB_HOST_GNU_SYSTEM)" != "gnu" ]; then echo 50; else echo 30; fi`
+%define fakechroot_tcp_altprio %`if [ "$(dpkg-architecture -qDEB_HOST_GNU_SYSTEM)" != "gnu" ]; then echo 30; else echo 50; fi`
+
+# Other macros:
+#   automake_version=%{automake_version}
+#   DEB_HOST_GNU_SYSTEM=%{DEB_HOST_GNU_SYSTEM}
+#   fakechroot_sysv_altprio=%{fakechroot_sysv_altprio}
+#   fakechroot_tcp_altprio=%{fakechroot_tcp_altprio}
 
 Source: fakechroot
 Section: utils
@@ -14,26 +31,18 @@ Priority: optional
 Maintainer: Piotr Roszatycki <dexter@debian.org>
 Standards-Version: 3.6.1
 Home-Page: <URL:http://fakechroot.alioth.debian.org/>
-Description: Gives a fake chroot environment
-Origin: debian
+Description: gives a fake chroot environment
 Copyright: GPL
- (c) 2003 Piotr Roszatycki <dexter@debian.org>, GPL
+ (c) 2003-2005 Piotr Roszatycki <dexter@debian.org>, GPL
  .
  Based on fakeroot package:
  GNU copyleft joost witteveen, <joostje@debian.org>.
 Build-Depends: automake%{automake_version}, autoconf, libtool
-Build-Depends: sharutils, file, libc6-dev-s390x [s390], libc6-dev-sparc64 [sparc], gcc-3.3 [s390]
-Build: sh
- aclocal-%{automake_version}
- autoheader
- libtoolize --copy
- automake-%{automake_version} --add-missing --copy
- autoconf
- ( cd fake 
-    aclocal-%{automake_version}
-    automake-%{automake_version} --add-missing --copy
-    autoconf
- ) || false
+Build-Depends: sharutils, file
+Build-Depends: libc6-dev-s390x [s390]
+Build-Depends: libc6-dev-sparc64 [sparc]
+Build-Depends: gcc-3.4 [amd64], ia32-libs-dev [amd64]
+Build: bash
  CC=${CC:-gcc}
  CFLAGS=${CFLAGS:--Wall -pedantic -g}
  CXXFLAGS=${CFLAGS:--Wall -pedantic -g}
@@ -44,28 +53,131 @@ Build: sh
      CFLAGS="$CFLAGS -O2"
      CXXFLAGS="$CXXFLAGS -O2"
  fi
- install -d mkdir build-tree-lib build-tree-fake build-tree-lib64
- ( cd build-tree-lib && CC="$CC" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
-     ../configure --prefix=/usr --mandir=/usr/share/man --libdir=/usr/lib/libfakechroot ) || false
- ( cd build-tree-fake && CC="$CC" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
-     ../fake/configure --prefix=/usr --mandir=/usr/share/man ) || false
- ( cd build-tree-lib && make ) || false
- ( cd build-tree-fake && make ) || false
+ .
+ if ! [ -f autoconf-stamp ]; then
+     rm -f aclocal.m4 configure
+     aclocal-%{automake_version}
+     autoheader
+     libtoolize --copy
+     automake-%{automake_version} --add-missing --copy
+     autoconf
+     pushd fake
+         aclocal-%{automake_version}
+         automake-%{automake_version} --add-missing --copy
+         autoconf
+     popd
+     touch autoconf-stamp
+ fi
+ .
+ if ! [ -f configure-stamp ]; then
+     install -d build-tree-lib-sysv build-tree-fake-sysv build-tree-lib64-sysv
+     pushd build-tree-lib-sysv
+         CC="$CC" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
+             ../configure --prefix=/usr --mandir=/usr/share/man --libdir=/usr/lib/libfakechroot \
+                 --program-suffix=-sysv
+     popd
+     pushd build-tree-fake-sysv
+     CC="$CC" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
+         ../fake/configure --prefix=/usr --mandir=/usr/share/man \
+                 --program-suffix=-sysv
+     popd
+     if [ "$DEB_HOST_GNU_TYPE" = "s390-linux" ]; then
+         pushd build-tree-lib64-sysv
+         CC="gcc -m64" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
+             ../configure --prefix=/usr --mandir=/usr/share/man --build=s390-linux --host=s390x-linux \
+                 --program-suffix=-sysv
+         popd
+     fi
+     if [ "$DEB_HOST_GNU_TYPE" = "sparc-linux" ]; then
+         pushd build-tree-lib64-sysv
+         CC="gcc -m64" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
+             ../configure --prefix=/usr --mandir=/usr/share/man --build=sparc-linux --host=sparc64-linux \
+                 --program-suffix=-sysv
+         popd
+     fi
+     if [ "$DEB_HOST_GNU_TYPE" = "x86_64-linux" ]; then
+         pushd build-tree-lib64-sysv
+         CC="gcc-3.4 -m32" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
+             ../configure --prefix=/usr --mandir=/usr/share/man --build=x86_64-linux --host=i386-linux \
+                 --program-suffix=-sysv
+         popd
+     fi
+     install -d build-tree-lib-tcp build-tree-fake-tcp build-tree-lib64-tcp
+     pushd build-tree-lib-tcp
+         CC="$CC" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
+             ../configure --prefix=/usr --mandir=/usr/share/man --libdir=/usr/lib/libfakechroot \
+                 --program-suffix=-tcp --with-ipc=tcp
+     popd
+     pushd build-tree-fake-tcp
+     CC="$CC" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
+         ../fake/configure --prefix=/usr --mandir=/usr/share/man \
+                 --program-suffix=-tcp --with-ipc=tcp
+     popd
+     if [ "$DEB_HOST_GNU_TYPE" = "s390-linux" ]; then
+         pushd build-tree-lib64-tcp
+         CC="gcc -m64" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
+             ../configure --prefix=/usr --mandir=/usr/share/man --build=s390-linux --host=s390x-linux \
+                 --program-suffix=-tcp --with-ipc=tcp
+         popd
+     fi
+     if [ "$DEB_HOST_GNU_TYPE" = "sparc-linux" ]; then
+         pushd build-tree-lib64-tcp
+         CC="gcc -m64" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
+             ../configure --prefix=/usr --mandir=/usr/share/man --build=sparc-linux --host=sparc64-linux \
+                 --program-suffix=-tcp --with-ipc=tcp
+         popd
+     fi
+     if [ "$DEB_HOST_GNU_TYPE" = "x86_64-linux" ]; then
+         pushd build-tree-lib64-tcp
+         CC="gcc-3.4 -m32" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
+             ../configure --prefix=/usr --mandir=/usr/share/man --build=x86_64-linux --host=i386-linux \
+                 --program-suffix=-tcp x86_64-linux
+         popd
+     fi
+     touch configure-stamp
+ fi
+ .
+ if ! [ -f build-stamp ]; then
+     pushd build-tree-lib-sysv
+         make
+     popd
+     pushd build-tree-fake-sysv
+         make
+     popd
+     if [ "$DEB_HOST_GNU_TYPE" = "s390-linux" ] || \
+        [ "$DEB_HOST_GNU_TYPE" = "sparc-linux" ] || \
+        [ "$DEB_HOST_GNU_TYPE" = "x86_64-linux" ]; then
+         pushd build-tree-lib64-sysv
+             make
+         popd
+     fi
+     pushd build-tree-lib-tcp
+         make
+     popd
+     pushd build-tree-fake-tcp
+         make
+     popd
+     if [ "$DEB_HOST_GNU_TYPE" = "s390-linux" ] || \
+        [ "$DEB_HOST_GNU_TYPE" = "sparc-linux" ] || \
+        [ "$DEB_HOST_GNU_TYPE" = "x86_64-linux" ]; then
+         pushd build-tree-lib64-tcp
+             make
+         popd
+     fi
+     touch build-stamp
+ fi
+ .
 %if %{with_test}
- ( cd build-tree-lib && make check ) || false
+ pushd build-tree-lib-sysv
+     make check
+ popd
+ pushd build-tree-lib-tcp
+     make check
+ popd
 %endif
- if [ "$DEB_HOST_GNU_TYPE" = "sparc-linux" ]; then
-     ( cd build-tree-lib64 && CC="gcc -m64" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
-         ../configure --prefix=/usr --mandir=/usr/share/man --build=sparc-linux --host=sparc64-linux ) || false
-     ( cd build-tree-lib64 && make libfakechroot.la ) || false
- fi
- if [ "$DEB_HOST_GNU_TYPE" = "s390-linux" ]; then
-     ( cd build-tree-lib64 && CC="gcc-3.3 -m64" CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
-         ../configure --prefix=/usr --mandir=/usr/share/man --build=s390-linux --host=s390x-linux ) || false
-     ( cd build-tree-lib64 && make libfakechroot.la ) || false
- fi
 Clean: sh
- rm -rf build-tree-*
+ rm -rf build-tree-* || true
+ rm -f *-stamp || true
  rm -rf $(cat .cvsignore)
  for i in $(find -name .cvsignore); do
      ( cd $(dirname $i) && rm -rf $(cat .cvsignore) )
@@ -73,40 +185,95 @@ Clean: sh
 
 Package: fakechroot
 Architecture: any
-Depends: fakeroot (>= %{fakeroot_version}), []
-Description: Gives a fake chroot environment
+Description: gives a fake chroot environment
  This package provides a library which overrides libc functions, so
  it is possible to use root-specific tools without root priviliges.
  .
- In fake chroot you can install i.e. Debian boostrap, create developer's
+ In fake chroot you can install i.e. Debian bootstrap, create developer's
  environment and build packages inside chroot'ed system using standard
  non-root user account.
-Install: sh
- yada copy -into /usr/lib/libfakechroot build-tree-lib/.libs/*.so.*.*.* build-tree-lib/.libs/*.a
- chmod 644 $ROOT/usr/lib/libfakechroot/*.so.*.*.*
- for f in build-tree-lib/.libs/*.so.*.*.*; do
-     f=$(basename $f)
-     yada symlink -lib -subdir libfakechroot -as $(echo $f | sed 's/\.[0-9]*\.[0-9]*$//') $f
-     yada symlink -lib -subdir libfakechroot -as $(echo $f | sed 's/\.[0-9]*\.[0-9]*\.[0-9]*$//') $f
- done
- yada copy -into /usr/lib build-tree-fake/.libs/*.so.*.*.*
- chmod 4644 $ROOT/usr/lib/*.so.*.*.*
- if [ "$DEB_HOST_GNU_TYPE" = "sparc-linux" -o "$DEB_HOST_GNU_TYPE" = "s390-linux" ]; then
-     for f in build-tree-lib64/.libs/*.so.*.*.*; do
-         f=$(basename $f)
-         yada symlink -lib -into /usr/lib64/libfakechroot -as $(echo $f | sed 's/\.[0-9]*\.[0-9]*$//') $f
-         yada symlink -lib -into /usr/lib64/libfakechroot -as $(echo $f | sed 's/\.[0-9]*\.[0-9]*\.[0-9]*$//') $f
-     done
-     chmod 4644 $ROOT/usr/lib/*.so.*.*.*
+Install: bash
+ if [ "$DEB_HOST_GNU_TYPE" = "x86_64-linux" ]; then
+     BIARCH_LIB_DIR=emul/ia32-linux/usr/lib
+ else
+     BIARCH_LIB_DIR=usr/lib64
  fi
- for f in build-tree-fake/.libs/*.so.*.*.*; do
-     f=$(basename $f)
-     yada symlink -lib -as $(echo $f | sed 's/\.[0-9]*\.[0-9]*$//') $f
-     yada symlink -lib -as $(echo $f | sed 's/\.[0-9]*\.[0-9]*\.[0-9]*$//') $f
+ .
+ for i in build-tree*; do
+     pushd $i
+         if [ -f Makefile ]; then
+             rm -rf tmp || true
+             make install DESTDIR=$(pwd)/tmp
+         fi
+     popd
  done
- yada install -script -as fakechroot scripts/fakeroot
- yada install -man -as fakechroot.1 doc/fakeroot.1
- yada install -doc README.fakechroot doc/debootstrap.diff 
+ .
+ yada install -lib -into /usr/lib \
+     -as $(basename build-tree-fake-sysv/tmp/usr/lib/*.so.*.*.* | sed 's/\.so/-sysv&/') \
+     build-tree-fake-sysv/tmp/usr/lib/*.so.*.*.*
+ yada symlink -into /usr/lib \
+     -as $(basename build-tree-fake-sysv/tmp/usr/lib/*.so.? | sed 's/\.so/-sysv&/') \
+     $(basename build-tree-fake-sysv/tmp/usr/lib/*.so.*.*.* | sed 's/\.so/-sysv&/')
+ yada install -lib -into /usr/lib \
+     -as $(basename build-tree-fake-tcp/tmp/usr/lib/*.so.*.*.* | sed 's/\.so/-tcp&/') \
+     build-tree-fake-tcp/tmp/usr/lib/*.so.*.*.*
+ yada symlink -into /usr/lib \
+     -as $(basename build-tree-fake-tcp/tmp/usr/lib/*.so.? | sed 's/\.so/-tcp&/') \
+     $(basename build-tree-fake-tcp/tmp/usr/lib/*.so.*.*.* | sed 's/\.so/-tcp&/')
+ yada install -script -as fakechroot-sysv build-tree-lib-sysv/tmp/usr/bin/fakeroot-sysv
+ yada install -bin -as fakechrootd-sysv build-tree-lib-sysv/tmp/usr/bin/faked-sysv
+ yada install -lib -into /usr/lib/libfakechroot \
+     -as $(basename build-tree-lib-sysv/tmp/usr/lib/libfakechroot/*.so.*.*.* | sed 's/\.so/-sysv&/') \
+     build-tree-lib-sysv/tmp/usr/lib/libfakechroot/*.so.*.*.*
+ yada symlink -into /usr/lib/libfakechroot \
+     -as $(basename build-tree-lib-sysv/tmp/usr/lib/libfakechroot/*.so.? | sed 's/\.so/-sysv&/') \
+     $(basename build-tree-lib-sysv/tmp/usr/lib/libfakechroot/*.so.*.*.* | sed 's/\.so/-sysv&/')
+ yada install -script -as fakechroot-tcp build-tree-lib-tcp/tmp/usr/bin/fakeroot-tcp
+ yada install -bin -as fakechrootd-tcp build-tree-lib-tcp/tmp/usr/bin/faked-tcp
+ yada install -lib -into /usr/lib/libfakechroot \
+     -as $(basename build-tree-lib-tcp/tmp/usr/lib/libfakechroot/*.so.*.*.* | sed 's/\.so/-tcp&/') \
+     build-tree-lib-tcp/tmp/usr/lib/libfakechroot/*.so.*.*.*
+ yada symlink -into /usr/lib/libfakechroot \
+     -as $(basename build-tree-lib-tcp/tmp/usr/lib/libfakechroot/*.so.? | sed 's/\.so/-tcp&/') \
+     $(basename build-tree-lib-tcp/tmp/usr/lib/libfakechroot/*.so.*.*.* | sed 's/\.so/-tcp&/')
+ .
+ if [ "$DEB_HOST_GNU_TYPE" = "s390-linux" ] || \
+    [ "$DEB_HOST_GNU_TYPE" = "sparc-linux" ] || \
+    [ "$DEB_HOST_GNU_TYPE" = "x86_64-linux" ]; then
+     yada install -lib -into /$BIARCH_LIB_DIR/libfakechroot \
+         -as $(basename build-tree-lib64-sysv/tmp/usr/lib/*.so.*.*.* | sed 's/\.so/-sysv&/') \
+         build-tree-lib64-sysv/tmp/usr/lib/*.so.*.*.*
+     yada symlink -into /$BIARCH_LIB_DIR/libfakechroot \
+         -as $(basename build-tree-lib64-sysv/tmp/usr/lib/*.so.? | sed 's/\.so/-sysv&/') \
+         $(basename build-tree-lib64-sysv/tmp/usr/lib/*.so.*.*.* | sed 's/\.so/-sysv&/')
+     yada install -lib -into /$BIARCH_LIB_DIR/libfakechroot \
+         -as $(basename build-tree-lib64-tcp/tmp/usr/lib/*.so.*.*.* | sed 's/\.so/-tcp&/') \
+         build-tree-lib64-tcp/tmp/usr/lib/*.so.*.*.*
+     yada symlink -into /$BIARCH_LIB_DIR/libfakechroot \
+         -as $(basename build-tree-lib64-tcp/tmp/usr/lib/*.so.? | sed 's/\.so/-tcp&/') \
+         $(basename build-tree-lib64-tcp/tmp/usr/lib/*.so.*.*.* | sed 's/\.so/-tcp&/')
+ fi
+ .
+ yada install -man -as fakechroot-sysv.1 doc/fakeroot.1
+ yada install -man -as fakechroot-tcp.1 doc/fakeroot.1
+ yada install -man -as fakechrootd-sysv.1 doc/faked.1
+ yada install -man -as fakechrootd-tcp.1 doc/faked.1
  yada install -doc -subdir examples scripts/restoremode.sh scripts/savemode.sh scripts/ldd.fake
 Shlibs:
- /usr/lib/libfakechroot/libfakechroot 0
+ /usr/lib/libfakechroot/libfakeroot-sysv 0
+ /usr/lib/libfakechroot/libfakeroot-tcp 0
+Alternatives:
+ /usr/bin/fakechroot -> fakechroot -> /usr/bin/fakechroot-sysv (%{fakechroot_sysv_altprio})
+ >> /usr/share/man/man1/fakechroot.1.gz -> fakechroot.1.gz -> /usr/share/man/man1/fakechroot-sysv.1.gz
+ >> /usr/share/man/man1/fakechrootd.1.gz -> fakechrootd.1.gz -> /usr/share/man/man1/fakechrootd-sysv.1.gz
+ /usr/bin/fakechroot -> fakechroot -> /usr/bin/fakechroot-tcp (%{fakechroot_tcp_altprio})
+ >> /usr/share/man/man1/fakechroot.1.gz -> fakechroot.1.gz -> /usr/share/man/man1/fakechroot-tcp.1.gz
+ >> /usr/share/man/man1/fakechrootd.1.gz -> fakechrootd.1.gz -> /usr/share/man/man1/fakechrootd-tcp.1.gz
+Overrides:
+ ldconfig-symlink-missing-for-shlib usr/lib/libfakechroot.so.0 usr/lib/libfakechroot-tcp.so.0.0.1 libfakechroot.so.0
+ ldconfig-symlink-missing-for-shlib usr/lib/libfakechroot.so.0 usr/lib/libfakechroot-sysv.so.0.0.1 libfakechroot.so.0
+ shlib-missing-in-control-file libfakechroot usr/lib/libfakechroot-tcp.so.0.0.1
+ shlib-missing-in-control-file libfakechroot usr/lib/libfakechroot-sysv.so.0.0.1
+ unused-shlib-entry-in-control-file /usr/lib/libfakechroot/libfakeroot-tcp
+ unused-shlib-entry-in-control-file /usr/lib/libfakechroot/libfakeroot-sysv
+ postinst-must-call-ldconfig usr/lib/libfakechroot-sysv.so.0.0.1
