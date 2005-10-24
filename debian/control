@@ -2,8 +2,8 @@ Source: fakechroot
 Maintainer: Piotr Roszatycki <dexter@debian.org>
 Section: utils
 Priority: optional
-Standards-Version: 3.6.1
-Build-Depends: automake1.7, autoconf, libtool, sharutils, file, libc6-dev-s390x [s390], libc6-dev-sparc64 [sparc], gcc-3.4 [amd64], ia32-libs-dev [amd64], yada (>= 0.34)
+Standards-Version: 3.6.2
+Build-Depends: libc6-dev-s390x [s390], libc6-dev-sparc64 [sparc], ia32-libs-dev [amd64], yada (>= 0.48)
 
 Package: fakechroot
 Architecture: any
