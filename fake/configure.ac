@@ -1,26 +1,19 @@
-dnl Process this file with autoconf to produce a configure script.
-AC_INIT
-AC_CONFIG_SRCDIR([libfakeroot.c])
+# $Id: /trunk/fake/configure.ac 191 2005-10-24T10:09:41.420717Z dexter  $
+
+AC_PREREQ(2.59)
+AC_INIT([fakechroot], [2.5], [dexter@debian.org])
 AC_CANONICAL_TARGET
-
-AM_INIT_AUTOMAKE(fakeroot, 0.5.1)
+AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
-AC_CONFIG_AUX_DIR(..)
+AC_CONFIG_SRCDIR([src/libfakechroot.c])
+AC_CONFIG_HEADER([config.h])
+AC_LANG_C
 
-dnl AM_CONFIG_HEADER(config.h)
-
+# Checks for programs.
+AC_PROG_MAKE_SET
 AM_PROG_LIBTOOL
 AC_PROG_CC
-dnl Checks for programs.
+AC_PROG_LN_S
 
-dnl Checks for libraries.
-dnl Replace `main' with a function in -ldl:
-AC_CHECK_LIB(dl, dlopen)
-
-
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile doc/Makefile src/Makefile])
 AC_OUTPUT
-
-dnl Local variables:
-dnl mode: m4
-dnl End:
