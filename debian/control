@@ -2,15 +2,14 @@ Source: fakechroot
 Maintainer: Piotr Roszatycki <dexter@debian.org>
 Section: utils
 Priority: optional
-Standards-Version: 3.6.2
-Build-Depends: libc6-dev-s390x [s390], libc6-dev-sparc64 [sparc], libc6-dev-i386 [amd64], yada (>= 0.48)
+Standards-Version: 3.7.2
+Build-Depends: libc6-dev-i386 [amd64], libc6-dev-powerpc [ppc64], libc6-dev-s390x [s390], libc6-dev-sparc64 [sparc], yada (>= 0.52)
 
 Package: fakechroot
 Architecture: any
-Depends: ${fakechroot:Depends}
 Description: gives a fake chroot environment
  This package provides a library which overrides libc functions, so
- it is possible to use root-specific tools without root priviliges.
+ it is possible to use root-specific tools without root privileges.
  .
  In fake chroot you can install i.e. Debian bootstrap, create developer's
  environment and build packages inside chroot'ed system using standard
