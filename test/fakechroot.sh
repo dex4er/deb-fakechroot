@@ -30,6 +30,9 @@ for f in \
     /bin/bash \
     /bin/grep \
     /bin/ls \
+    /bin/cp \
+    /bin/mkdir \
+    /bin/chmod \
     /bin/pwd \
     /bin/sh \
     /bin/rm \

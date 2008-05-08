@@ -321,7 +321,9 @@ static char *  (*next_canonicalize_file_name) (const char *name) = NULL;
 #endif
 static int     (*next_chdir) (const char *path) = NULL;
 static int     (*next_chmod) (const char *path, mode_t mode) = NULL;
+static int     (*next_fchmodat) (int dfd, const char *path, mode_t mode, int flag) = NULL;
 static int     (*next_chown) (const char *path, uid_t owner, gid_t group) = NULL;
+static int     (*next_fchownat) (int dfd, const char *path, uid_t owner, gid_t group, int flag) = NULL;
 /* static int     (*next_chroot) (const char *path) = NULL; */
 static int     (*next_creat) (const char *pathname, mode_t mode) = NULL;
 static int     (*next_creat64) (const char *pathname, mode_t mode) = NULL;
@@ -422,6 +424,7 @@ static int     (*next_nftw) (const char *dir, int (*fn)(const char *file, const 
 static int     (*next_nftw64) (const char *dir, int (*fn)(const char *file, const struct stat64 *sb, int flag, struct FTW *s), int nopenfd, int flags) = NULL;
 #endif
 static int     (*next_open) (const char *pathname, int flags, ...) = NULL;
+static int     (*next_openat) (int dfd, const char *pathname, int flags, ...) = NULL;
 static int     (*next_open64) (const char *pathname, int flags, ...) = NULL;
 #if !defined(HAVE___OPENDIR2)
 static DIR *   (*next_opendir) (const char *name) = NULL;
@@ -539,7 +542,9 @@ void fakechroot_init (void)
 #endif
     nextsym(chdir, "chdir");
     nextsym(chmod, "chmod");
+    nextsym(fchmodat, "fchmodat");
     nextsym(chown, "chown");
+    nextsym(fchownat, "fchownat");
 /*    nextsym(chroot, "chroot"); */
     nextsym(creat, "creat");
     nextsym(creat64, "creat64");
@@ -640,6 +645,7 @@ void fakechroot_init (void)
     nextsym(nftw64, "nftw64");
 #endif
     nextsym(open, "open");
+    nextsym(openat, "openat");
     nextsym(open64, "open64");
 #if !defined(HAVE___OPENDIR2)
     nextsym(opendir, "opendir");
@@ -927,6 +933,13 @@ int chmod (const char *path, mode_t mode)
     if (next_chmod == NULL) fakechroot_init();
     return next_chmod(path, mode);
 }
+int fchmodat (int dfd, const char *path, mode_t mode, int flag)
+{
+    char *fakechroot_path, *fakechroot_ptr, fakechroot_buf[FAKECHROOT_MAXPATH];
+    expand_chroot_path(path, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+    if (next_fchmodat == NULL) fakechroot_init();
+    return next_fchmodat(dfd, path, mode, flag);
+}
 
 
 /* #include <sys/types.h> */
@@ -939,6 +952,13 @@ int chown (const char *path, uid_t owner, gid_t group)
     return next_chown(path, owner, group);
 }
 
+int fchownat (int dfd, const char *path, uid_t owner, gid_t group, int flag)
+{
+    char *fakechroot_path, *fakechroot_ptr, fakechroot_buf[FAKECHROOT_MAXPATH];
+    expand_chroot_path(path, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+    if (next_fchownat == NULL) fakechroot_init();
+    return next_fchownat(dfd, path, owner, group, flag);
+}
 
 /* #include <unistd.h> */
 int chroot (const char *path)
@@ -1927,6 +1947,21 @@ int open (const char *pathname, int flags, ...) {
     return next_open(pathname, flags, mode);
 }
 
+int openat (int dfd, const char *pathname, int flags, ...) {
+    int mode = 0;
+    char *fakechroot_path, *fakechroot_ptr, fakechroot_buf[FAKECHROOT_MAXPATH];
+    expand_chroot_path(pathname, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+
+    if (flags & O_CREAT) {
+        va_list arg;
+        va_start (arg, flags);
+        mode = va_arg (arg, int);
+        va_end (arg);
+    }
+
+    if (next_openat == NULL) fakechroot_init();
+    return next_openat(dfd, pathname, flags, mode);
+}
 
 /* #include <sys/types.h> */
 /* #include <sys/stat.h> */
