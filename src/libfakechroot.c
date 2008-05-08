@@ -463,6 +463,9 @@ static int     (*next_truncate) (const char *path, off_t length) = NULL;
 static int     (*next_truncate64) (const char *path, off64_t length) = NULL;
 #endif
 static int     (*next_unlink) (const char *pathname) = NULL;
+static int     (*next_unlinkat) (int dirfd, const char *pathname, int flags) = NULL;
+static int     (*next___fxstatat) (int ver, int dirfd, const char *pathname, struct stat *buf, int flags) = NULL;
+static int     (*next___fxstatat64) (int ver, int dirfd, const char *pathname, struct stat64 *buf, int flags) = NULL;
 #ifdef HAVE_ULCKPWDF
 /* static int     (*next_ulckpwdf) (void) = NULL; */
 #endif
@@ -678,6 +681,9 @@ void fakechroot_init (void)
     nextsym(truncate64, "truncate64");
 #endif
     nextsym(unlink, "unlink");
+    nextsym(unlinkat, "unlinkat");
+    nextsym(__fxstatat, "__fxstatat");
+    nextsym(__fxstatat64, "__fxstatat64");
 #ifdef HAVE_ULCKPWDF
 /*    nextsym(ulckpwdf, "ulckpwdf"); */
 #endif
@@ -2222,6 +2228,31 @@ int unlink (const char *pathname)
     return next_unlink(pathname);
 }
 
+/* #include <fcntl.h> */
+int unlinkat (int dirfd, const char *pathname, int flags)
+{
+    char *fakechroot_path, *fakechroot_ptr, fakechroot_buf[FAKECHROOT_MAXPATH];
+    expand_chroot_path(pathname, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+    if (next_unlinkat == NULL) fakechroot_init();
+    return next_unlinkat(dirfd, pathname, flags);
+}
+
+/* #include <fcntl.h> */
+/* #include <sys/stat.h> */
+int __fxstatat (int ver, int dirfd, const char *pathname, struct stat *buf, int flags)
+{
+    char *fakechroot_path, *fakechroot_ptr, fakechroot_buf[FAKECHROOT_MAXPATH];
+    expand_chroot_path(pathname, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+    if (next___fxstatat == NULL) fakechroot_init();
+    return next___fxstatat(ver, dirfd, pathname, buf, flags);
+}
+int __fxstatat64 (int ver, int dirfd, const char *pathname, struct stat64 *buf, int flags)
+{
+    char *fakechroot_path, *fakechroot_ptr, fakechroot_buf[FAKECHROOT_MAXPATH];
+    expand_chroot_path(pathname, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+    if (next___fxstatat64 == NULL) fakechroot_init();
+    return next___fxstatat64(ver, dirfd, pathname, buf, flags);
+}
 
 /* #include <sys/types.h> */
 /* #include <utime.h> */

@@ -32,6 +32,7 @@ for f in \
     /bin/ls \
     /bin/pwd \
     /bin/sh \
+    /bin/rm \
     /usr/bin/id \
     /usr/bin/find \
     /usr/bin/perl \
@@ -63,5 +64,5 @@ export LD_PRELOAD
 if [ -n "$*" ]; then
     HOME=/root /usr/sbin/chroot `pwd`/testtree "$@"
 else
-    HOME=/root /usr/sbin/chroot `pwd`/testtree /bin/sh
+    HOME=/root /usr/sbin/chroot `pwd`/testtree /bin/bash
 fi
