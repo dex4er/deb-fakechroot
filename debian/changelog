@@ -1,3 +1,10 @@
+fakechroot (2.6-1.3ubuntu3) intrepid; urgency=low
+
+  * src/libfakechroot.c: Define openat64(), to unbreak rm -r on i386, too.
+    (LP: #228534)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Fri, 09 May 2008 07:53:31 +0200
+
 fakechroot (2.6-1.3ubuntu2) intrepid; urgency=low
 
   * src/libfakechroot.c:

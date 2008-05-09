@@ -426,6 +426,7 @@ static int     (*next_nftw64) (const char *dir, int (*fn)(const char *file, cons
 static int     (*next_open) (const char *pathname, int flags, ...) = NULL;
 static int     (*next_openat) (int dfd, const char *pathname, int flags, ...) = NULL;
 static int     (*next_open64) (const char *pathname, int flags, ...) = NULL;
+static int     (*next_openat64) (int dfd, const char *pathname, int flags, ...) = NULL;
 #if !defined(HAVE___OPENDIR2)
 static DIR *   (*next_opendir) (const char *name) = NULL;
 #endif
@@ -647,6 +648,7 @@ void fakechroot_init (void)
     nextsym(open, "open");
     nextsym(openat, "openat");
     nextsym(open64, "open64");
+    nextsym(openat64, "openat64");
 #if !defined(HAVE___OPENDIR2)
     nextsym(opendir, "opendir");
 #endif
@@ -1983,6 +1985,22 @@ int open64 (const char *pathname, int flags, ...)
     return next_open64(pathname, flags, mode);
 }
 
+int openat64 (int dfd, const char *pathname, int flags, ...)
+{
+    int mode = 0;
+    char *fakechroot_path, *fakechroot_ptr, fakechroot_buf[FAKECHROOT_MAXPATH];
+    expand_chroot_path(pathname, fakechroot_path, fakechroot_ptr, fakechroot_buf);
+
+    if (flags & O_CREAT) {
+        va_list arg;
+        va_start (arg, flags);
+        mode = va_arg (arg, int);
+        va_end (arg);
+    }
+
+    if (next_openat64 == NULL) fakechroot_init();
+    return next_openat64(dfd, pathname, flags, mode);
+}
 
 #if !defined(HAVE___OPENDIR2)
 /* #include <sys/types.h> */
