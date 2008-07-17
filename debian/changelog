@@ -1,3 +1,49 @@
+fakechroot (2.7.1-1) unstable; urgency=low
+
+  * src/libfakechroot.c:
+    - Supports uclibc which doesn't provide getwd(2) function.
+  * m4/readlink_argtypes.m4, src/libfakechroot.c:
+    - Compiles with older libc: configure script detects readlink type of
+      return value.
+  * debian/packages:
+    - Supports cross compiling.
+  * test/fakechroot.sh:
+    - Can be called with $PREFIX environment variable.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Thu, 17 Jul 2008 13:50:10 +0200
+
+fakechroot (2.7-1) unstable; urgency=medium
+
+  * Apply all NMU patches.  Thank you, people!
+  * Improved stability and support for the latest libc.  Closes: #420870.
+  * src/libfakechroot.c:
+    - Fixed readlink(2) function to be ssize_t as it is in newer libc.
+      Thanks Sune Vuorela.
+    - New functions: __fxstatat(2), __fxstatat64(2), fchmodat(2), fchownat(2),
+      __openat(2), __openat64(2), unlinkat(2).  It fixes last coreutils.
+      Thanks Martin Pitt and Daniel Kahn Gillmor.  Closes: #473682.
+    - New functions: mkdirat(2), renameat(2).
+    - Fixed chroot(2) function to not change current working directory.
+      Closes: #477447.
+    - Fixed chroot(2) function to handle relative path.
+    - Fixed execve(2) function to not expand argv0 and handle "#!" correctly.
+      Thanks Mark Eichin.  Closes: #412774.
+    - New eaccess(3) function backported from Klik.
+    - New functions: bind(2), connect(2), getpeername(2), getsockname(2).
+      They support PF_UNIX sockets.  Closes: #413918.
+    - More memory allocation for fakechroot_init.
+  * test/fakechroot.sh:
+    - Add cp, mkdir, chmod, rm and libraries.
+    - Call bash instead of sh.
+    - Use /usr/lib/fakechroot library path if own version is not compiled.
+  * debian/packages:
+    - Standards-Version: 3.8.0
+    - Depends on main libc package.  Non-default multilib architecture is
+      excluded from dependencies list.
+    - Multilib architecture is supported on i386.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Tue, 15 Jul 2008 13:31:00 +0200
+
 fakechroot (2.6-1.3ubuntu3) intrepid; urgency=low
 
   * src/libfakechroot.c: Define openat64(), to unbreak rm -r on i386, too.
