@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 # Generated automatically from debian/packages
-# by yada v0.48, of Wed, 28 Sep 2005
+# by yada v0.54, of Sun, 28 Oct 2007
 
 DEB_HOST_ARCH        := $(shell dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
 DEB_HOST_ARCH_OS     := $(shell dpkg-architecture -qDEB_HOST_ARCH_OS 2>/dev/null)
@@ -123,85 +123,131 @@ debian/build-stamp: debian/build-arch-stamp debian/build-indep-stamp
 	echo -E 'fi';\
 	echo -E '';\
 	echo -E 'COMMON_CONFIG="\';\
-	echo -E '	--prefix=/usr \';\
-	echo -E '	--mandir=/usr/share/man \';\
-	echo -E '	--disable-static \';\
-	echo -E '	--with-libpath=/usr/lib/fakechroot:/usr/lib64/fakechroot:/usr/lib32/fakechroot"';\
+	echo -E '       --prefix=/usr \';\
+	echo -E '       --mandir=/usr/share/man \';\
+	echo -E '       --disable-static \';\
+	echo -E '       --with-libpath=/usr/lib/fakechroot:/usr/lib64/fakechroot:/usr/lib32/fakechroot"';\
 	echo -E '';\
 	echo -E 'if ! [ -f configure-stamp ]; then';\
 	echo -E '    mkdir -p build-tree-lib build-tree-fake build-tree-lib-biarch build-tree-fake-biarch';\
 	echo -E '    pushd build-tree-lib';\
 	echo -E '        CC="$$CC" CFLAGS="$$CFLAGS" \';\
 	echo -E '            ../configure \';\
-	echo -E '	         --cache-file=../config.cache \';\
+	echo -E '                --cache-file=../config.cache \';\
+	echo -E '                --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                --host=$$DEB_HOST_GNU_TYPE \';\
 	echo -E '                $$COMMON_CONFIG';\
 	echo -E '    popd';\
 	echo -E '    pushd build-tree-fake';\
 	echo -E '        CC="$$CC" CFLAGS="$$CFLAGS" \';\
 	echo -E '            ../fake/configure \';\
-	echo -E '	         --cache-file=../config.cache \';\
+	echo -E '                --cache-file=../config.cache \';\
+	echo -E '                --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                --host=$$DEB_HOST_GNU_TYPE \';\
 	echo -E '                $$COMMON_CONFIG';\
 	echo -E '    popd';\
-	echo -E '    if [ "$$DEB_BUILD_ARCH" = "s390" ]; then';\
-	echo -E '        pushd build-tree-lib-biarch';\
-	echo -E '            CC="gcc -m64" CFLAGS="$$CFLAGS" \';\
-	echo -E '                ../configure \';\
-	echo -E '	             --cache-file=../config.biarch.cache \';\
-	echo -E '		     --build=s390-linux \';\
-	echo -E '		     --host=s390x-linux \';\
-	echo -E '  	             --libdir=/usr/lib64 \';\
-	echo -E '                    $$COMMON_CONFIG';\
-	echo -E '        popd';\
-	echo -E '        pushd build-tree-fake-biarch';\
-	echo -E '            CC="gcc -m64" CFLAGS="$$CFLAGS" \';\
-	echo -E '                ../fake/configure \';\
-	echo -E '	             --cache-file=../config.biarch.cache \';\
-	echo -E '		     --build=s390-linux \';\
-	echo -E '		     --host=s390x-linux \';\
-	echo -E '  	             --libdir=/usr/lib64 \';\
-	echo -E '                    $$COMMON_CONFIG';\
-	echo -E '        popd';\
-	echo -E '    fi';\
-	echo -E '    if [ "$$DEB_BUILD_ARCH" = "sparc" ]; then';\
-	echo -E '        pushd build-tree-lib-biarch';\
-	echo -E '            CC="gcc -m64" CFLAGS="$$CFLAGS" \';\
-	echo -E '                ../configure \';\
-	echo -E '	             --cache-file=../config.biarch.cache \';\
-	echo -E '		     --build=sparc-linux \';\
-	echo -E '		     --host=sparc64-linux \';\
-	echo -E '  	             --libdir=/usr/lib64 \';\
-	echo -E '                    $$COMMON_CONFIG';\
-	echo -E '        popd';\
-	echo -E '        pushd build-tree-fake-biarch';\
-	echo -E '            CC="gcc -m64" CFLAGS="$$CFLAGS" \';\
-	echo -E '                ../fake/configure \';\
-	echo -E '	             --cache-file=../config.biarch.cache \';\
-	echo -E '		     --build=sparc-linux \';\
-	echo -E '		     --host=sparc64-linux \';\
-	echo -E '  	             --libdir=/usr/lib64 \';\
-	echo -E '                    $$COMMON_CONFIG';\
-	echo -E '        popd';\
-	echo -E '    fi';\
-	echo -E '    if [ "$$DEB_BUILD_ARCH" = "amd64" ]; then';\
-	echo -E '        pushd build-tree-lib-biarch';\
-	echo -E '            CC="gcc -m32" CFLAGS="$$CFLAGS" \';\
-	echo -E '                ../configure \';\
-	echo -E '	             --cache-file=../config.biarch.cache \';\
-	echo -E '		     --build=x86_64-linux \';\
-	echo -E '		     --host=i386-linux \';\
-	echo -E '  	             --libdir=/emul/ia32-linux/usr/lib \';\
-	echo -E '                    $$COMMON_CONFIG';\
-	echo -E '        popd';\
-	echo -E '        pushd build-tree-fake-biarch';\
-	echo -E '            CC="gcc -m32" CFLAGS="$$CFLAGS" \';\
-	echo -E '                ../fake/configure \';\
-	echo -E '	             --cache-file=../config.biarch.cache \';\
-	echo -E '		     --build=x86_64-linux \';\
-	echo -E '		     --host=i386-linux \';\
-	echo -E '  	             --libdir=/emul/ia32-linux/usr/lib \';\
-	echo -E '                    $$COMMON_CONFIG';\
-	echo -E '        popd';\
-	echo -E '    fi';\
+	echo -E '    case "$$DEB_HOST_ARCH" in';\
+	echo -E '        amd64)';\
+	echo -E '            pushd build-tree-lib-biarch';\
+	echo -E '                CC="gcc -m32" CFLAGS="$$CFLAGS" \';\
+	echo -E '                    ../configure \';\
+	echo -E '                        --cache-file=../config.biarch.cache \';\
+	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                        --host=i386-linux \';\
+	echo -E '                        --libdir=/emul/ia32-linux/usr/lib \';\
+	echo -E '                        $$COMMON_CONFIG';\
+	echo -E '            popd';\
+	echo -E '            pushd build-tree-fake-biarch';\
+	echo -E '                CC="gcc -m32" CFLAGS="$$CFLAGS" \';\
+	echo -E '                    ../fake/configure \';\
+	echo -E '                        --cache-file=../config.biarch.cache \';\
+	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                        --host=i386-linux \';\
+	echo -E '                        --libdir=/emul/ia32-linux/usr/lib \';\
+	echo -E '                        $$COMMON_CONFIG';\
+	echo -E '            popd';\
+	echo -E '            ;;';\
+	echo -E '        i386)';\
+	echo -E '            pushd build-tree-lib-biarch';\
+	echo -E '                CC="gcc -m64" CFLAGS="$$CFLAGS" \';\
+	echo -E '                    ../configure \';\
+	echo -E '                        --cache-file=../config.biarch.cache \';\
+	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                        --host=x86_64-linux \';\
+	echo -E '                        --libdir=/usr/lib64 \';\
+	echo -E '                        $$COMMON_CONFIG';\
+	echo -E '            popd';\
+	echo -E '            pushd build-tree-fake-biarch';\
+	echo -E '                CC="gcc -m64" CFLAGS="$$CFLAGS" \';\
+	echo -E '                    ../fake/configure \';\
+	echo -E '                        --cache-file=../config.biarch.cache \';\
+	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                        --host=x86_64-linux \';\
+	echo -E '                        --libdir=/usr/lib64 \';\
+	echo -E '                        $$COMMON_CONFIG';\
+	echo -E '            popd';\
+	echo -E '            ;;';\
+	echo -E '        ppc64)';\
+	echo -E '            pushd build-tree-lib-biarch';\
+	echo -E '                CC="gcc -m32" CFLAGS="$$CFLAGS" \';\
+	echo -E '                    ../configure \';\
+	echo -E '                        --cache-file=../config.biarch.cache \';\
+	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                        --host=powerpc-linux \';\
+	echo -E '                        --libdir=/usr/lib32 \';\
+	echo -E '                        $$COMMON_CONFIG';\
+	echo -E '            popd';\
+	echo -E '            pushd build-tree-fake-biarch';\
+	echo -E '                CC="gcc -m32" CFLAGS="$$CFLAGS" \';\
+	echo -E '                    ../fake/configure \';\
+	echo -E '                        --cache-file=../config.biarch.cache \';\
+	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                        --host=powerpc-linux \';\
+	echo -E '                        --libdir=/usr/lib32 \';\
+	echo -E '                        $$COMMON_CONFIG';\
+	echo -E '            popd';\
+	echo -E '            ;;';\
+	echo -E '        s390)';\
+	echo -E '            pushd build-tree-lib-biarch';\
+	echo -E '                CC="gcc -m64" CFLAGS="$$CFLAGS" \';\
+	echo -E '                    ../configure \';\
+	echo -E '                        --cache-file=../config.biarch.cache \';\
+	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                        --host=s390x-linux \';\
+	echo -E '                        --libdir=/usr/lib64 \';\
+	echo -E '                        $$COMMON_CONFIG';\
+	echo -E '            popd';\
+	echo -E '            pushd build-tree-fake-biarch';\
+	echo -E '                CC="gcc -m64" CFLAGS="$$CFLAGS" \';\
+	echo -E '                    ../fake/configure \';\
+	echo -E '                        --cache-file=../config.biarch.cache \';\
+	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                        --host=s390x-linux \';\
+	echo -E '                        --libdir=/usr/lib64 \';\
+	echo -E '                        $$COMMON_CONFIG';\
+	echo -E '            popd';\
+	echo -E '            ;;';\
+	echo -E '        sparc)';\
+	echo -E '            pushd build-tree-lib-biarch';\
+	echo -E '                CC="gcc -m64" CFLAGS="$$CFLAGS" \';\
+	echo -E '                    ../configure \';\
+	echo -E '                        --cache-file=../config.biarch.cache \';\
+	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                        --host=sparc64-linux \';\
+	echo -E '                        --libdir=/usr/lib64 \';\
+	echo -E '                        $$COMMON_CONFIG';\
+	echo -E '            popd';\
+	echo -E '            pushd build-tree-fake-biarch';\
+	echo -E '                CC="gcc -m64" CFLAGS="$$CFLAGS" \';\
+	echo -E '                    ../fake/configure \';\
+	echo -E '                        --cache-file=../config.biarch.cache \';\
+	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
+	echo -E '                        --host=sparc64-linux \';\
+	echo -E '                        --libdir=/usr/lib64 \';\
+	echo -E '                        $$COMMON_CONFIG';\
+	echo -E '            popd';\
+	echo -E '            ;;';\
+	echo -E '    esac';\
 	echo -E '    sleep 1 && touch configure-stamp';\
 	echo -E 'fi';\
 	echo -E '';\
@@ -212,16 +258,16 @@ debian/build-stamp: debian/build-arch-stamp debian/build-indep-stamp
 	echo -E '    pushd build-tree-fake';\
 	echo -E '        make';\
 	echo -E '    popd';\
-	echo -E '    if [ "$$DEB_BUILD_ARCH" = "s390" ] || \';\
-	echo -E '       [ "$$DEB_BUILD_ARCH" = "sparc" ] || \';\
-	echo -E '       [ "$$DEB_BUILD_ARCH" = "amd64" ]; then';\
-	echo -E '        pushd build-tree-lib-biarch';\
-	echo -E '            make';\
-	echo -E '        popd';\
-	echo -E '        pushd build-tree-fake-biarch';\
-	echo -E '            make';\
-	echo -E '        popd';\
-	echo -E '    fi';\
+	echo -E '    case "$$DEB_HOST_ARCH" in';\
+	echo -E '        amd64|i386|ppc64|s390|sparc)';\
+	echo -E '            pushd build-tree-lib-biarch';\
+	echo -E '                make';\
+	echo -E '            popd';\
+	echo -E '            pushd build-tree-fake-biarch';\
+	echo -E '                make';\
+	echo -E '            popd';\
+	echo -E '            ;;';\
+	echo -E '    esac';\
 	echo -E '    touch build-stamp';\
 	echo -E 'fi') | /bin/bash
 	touch debian/build-stamp
@@ -230,7 +276,7 @@ debian/build-arch-stamp:
 	@[ -f $(shell which yada) -a -f debian/rules ]
 	touch debian/build-arch-stamp
 
-debian/build-indep-stamp:
+debian/build-indep-stamp: debian/build-arch-stamp
 	@[ -f $(shell which yada) -a -f debian/rules ]
 	touch debian/build-indep-stamp
 
@@ -243,7 +289,7 @@ debian/tmp-fakechroot/DEBIAN/control: debian/build-stamp debian/control
 	rm -rf debian/tmp-fakechroot
 	umask 022 && install -d debian/tmp-fakechroot/DEBIAN
 	install -d debian/tmp-fakechroot/usr/share/doc/fakechroot
-	umask 022; yada generate copyright \
+	umask 022; yada generate copyright fakechroot \
 	  > debian/tmp-fakechroot/usr/share/doc/fakechroot/copyright
 	install -m 644 -p debian/changelog \
 	  debian/tmp-fakechroot/usr/share/doc/fakechroot/changelog
@@ -286,6 +332,9 @@ debian/tmp-fakechroot/DEBIAN/control: debian/build-stamp debian/control
 	echo -E 'yada python';\
 	echo -E 'yada strip';\
 	echo -E 'yada shlibdeps') | /bin/sh
+	rm -f debian/shlibs.local || true
+	test -f debian/tmp-fakechroot/DEBIAN/shlibs && cat debian/tmp-fakechroot/DEBIAN/shlibs | while read lib ver pkg; do echo $$lib $$ver; done >> debian/shlibs.local || true
+	LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:debian/tmp-fakechroot/lib:debian/tmp-fakechroot/usr/lib" dpkg-shlibdeps -pshlibs:fakechroot -dDepends debian/tmp-fakechroot/usr/lib/libfakechroot.so
 	yada compress fakechroot
 	yada generate maintscripts fakechroot
 	find debian/tmp-fakechroot -type f -print \
@@ -329,10 +378,12 @@ binary-package-fakechroot: check-root debian/tmp-fakechroot/DEBIAN/control
 	echo -E 'eval "yada () { perl $$(which yada) \"\$$@\"; }"; set -e; set -v';\
 	echo -E 'chmod -v u+s $$ROOT/usr/lib/*.so';\
 	echo -E '';\
-	echo -E 'case "$$DEB_BUILD_ARCH" in';\
+	echo -E 'case "$$DEB_HOST_ARCH" in';\
 	echo -E '    amd64)';\
 	echo -E '        chmod -v u+s $$ROOT/emul/ia32-linux/usr/lib/*.so;;';\
-	echo -E '    s390|sparc)';\
+	echo -E '    ppc64)';\
+	echo -E '        chmod -v u+s $$ROOT/usr/lib32/*.so;;';\
+	echo -E '    i386|s390|sparc)';\
 	echo -E '        chmod -v u+s $$ROOT/usr/lib64/*.so;;';\
 	echo -E 'esac') | /bin/sh
 	@if [ -d debian/tmp-fakechroot/usr/doc/fakechroot ]; then \

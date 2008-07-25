@@ -1,3 +1,124 @@
+fakechroot (2.8-1) unstable; urgency=medium
+
+  * src/libfakechroot.c:
+    - Fixed __fxstatat64(3) function which broke chown(1) command on i386
+      architecture.  Closes: #473682.
+    - Fixed FreeBSD port.  All *64(2) functions are optional.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Fri, 25 Jul 2008 15:01:40 +0200
+
+fakechroot (2.7.1-1) unstable; urgency=low
+
+  * src/libfakechroot.c:
+    - Supports uclibc which doesn't provide getwd(2) function.
+  * m4/readlink_argtypes.m4, src/libfakechroot.c:
+    - Compiles with older libc: configure script detects readlink type of
+      return value.
+  * debian/packages:
+    - Supports cross compiling.
+  * test/fakechroot.sh:
+    - Can be called with $PREFIX environment variable.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Thu, 17 Jul 2008 13:50:10 +0200
+
+fakechroot (2.7-1) unstable; urgency=medium
+
+  * Apply all NMU patches.  Thank you, people!
+  * Improved stability and support for the latest libc.  Closes: #420870.
+  * src/libfakechroot.c:
+    - Fixed readlink(2) function to be ssize_t as it is in newer libc.
+      Thanks Sune Vuorela.
+    - New functions: __fxstatat(2), __fxstatat64(2), fchmodat(2), fchownat(2),
+      __openat(2), __openat64(2), unlinkat(2).  It fixes last coreutils.
+      Thanks Martin Pitt and Daniel Kahn Gillmor.  Closes: #473682.
+    - New functions: mkdirat(2), renameat(2).
+    - Fixed chroot(2) function to not change current working directory.
+      Closes: #477447.
+    - Fixed chroot(2) function to handle relative path.
+    - Fixed execve(2) function to not expand argv0 and handle "#!" correctly.
+      Thanks Mark Eichin.  Closes: #412774.
+    - New eaccess(3) function backported from Klik.
+    - New functions: bind(2), connect(2), getpeername(2), getsockname(2).
+      They support PF_UNIX sockets.  Closes: #413918.
+    - More memory allocation for fakechroot_init.
+  * test/fakechroot.sh:
+    - Add cp, mkdir, chmod, rm and libraries.
+    - Call bash instead of sh.
+    - Use /usr/lib/fakechroot library path if own version is not compiled.
+  * debian/packages:
+    - Standards-Version: 3.8.0
+    - Depends on main libc package.  Non-default multilib architecture is
+      excluded from dependencies list.
+    - Multilib architecture is supported on i386.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Tue, 15 Jul 2008 13:31:00 +0200
+
+fakechroot (2.6-1.3ubuntu3) intrepid; urgency=low
+
+  * src/libfakechroot.c: Define openat64(), to unbreak rm -r on i386, too.
+    (LP: #228534)
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Fri, 09 May 2008 07:53:31 +0200
+
+fakechroot (2.6-1.3ubuntu2) intrepid; urgency=low
+
+  * src/libfakechroot.c:
+    - Define openat(), to unbreak rm -r.
+    - Define fchmodat(), to unbreak chmod.
+    - Define fchownat(), to unbreak chown.
+    This fixes everything which broke debootstrapping Hardy.
+  * test/fakechroot.sh: Add cp, mkdir, chmod.
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Thu, 08 May 2008 22:13:43 +0200
+
+fakechroot (2.6-1.3ubuntu1) intrepid; urgency=low
+
+  * src/libfakechroot.c: Provide wrapping of unlinkat(), __fxstatat(), and
+    __fxstatat64() to unbreak rm'ing absolute directories. This extends the
+    original patch from Daniel Kahn Gillmor in Debian #473682. Still
+    incomplete, since other *at() functions are still missing, but those are
+    the most pressing which cause the Apport retracers to fail so badly.
+  * test/fakechroot.sh: Add /bin/rm, and call bash instead of sh.
+
+ -- Martin Pitt <martin.pitt@ubuntu.com>  Thu, 08 May 2008 20:45:48 +0200
+
+fakechroot (2.6-1.3) unstable; urgency=low
+
+  * Non-maintainer upload to fix the fix for the fix for #422586
+  * Only use gcc-multilib on some archs.
+  * Fix the readlink function to be ssize_t as it is in newer libc
+
+ -- Sune Vuorela <debian@pusling.com>  Sat, 19 May 2007 17:19:53 +0200
+
+fakechroot (2.6-1.2) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Add build-dependency on gcc-multilib the yada way to avoid FTBFS. 
+    (Closes: #422586)
+
+ -- Sune Vuorela <debian@pusling.com>  Sat, 19 May 2007 15:13:28 +0200
+
+fakechroot (2.6-1.1) unstable; urgency=low
+
+  * Non-maintainer upload during BSP.
+  * Added build-dependency on gcc-multilib to avoid FTBFS (Closes: #422586).
+
+ -- Mario Iseli <admin@marioiseli.com>  Fri, 18 May 2007 18:17:26 +0200
+
+fakechroot (2.6-1) unstable; urgency=low
+
+  * New environment variable FAKECHROOT_EXCLUDE_PATH.
+  * Fixed getcwd(3) function. Closes: #410145, #410739.
+  * Fixed readlink(2) function. Closes: #412141.
+  * Fixed mktemp(3) function. Closes: #412918.
+  * The chroot(2) function is now recursive and allows nested chroots.
+    Closes: #412603.
+  * Updated manpage.
+  * Supported 32-bit biarch on ppc64 architecture. Closes: #361202.
+  * Fixed typo in package's description. Closes: #363403.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Sat,  5 May 2007 17:20:28 +0200
+
 fakechroot (2.5-1.1) unstable; urgency=low
 
   * Non-maintainer upload.
