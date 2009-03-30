@@ -254,6 +254,7 @@ debian/build-stamp: debian/build-arch-stamp debian/build-indep-stamp
 	echo -E 'if ! [ build-stamp -nt configure-stamp ]; then';\
 	echo -E '    pushd build-tree-lib';\
 	echo -E '        make';\
+	echo -E '        make check';\
 	echo -E '    popd';\
 	echo -E '    pushd build-tree-fake';\
 	echo -E '        make';\
@@ -292,7 +293,7 @@ debian/tmp-fakechroot/DEBIAN/control: debian/build-stamp debian/control
 	umask 022; yada generate copyright fakechroot \
 	  > debian/tmp-fakechroot/usr/share/doc/fakechroot/copyright
 	install -m 644 -p debian/changelog \
-	  debian/tmp-fakechroot/usr/share/doc/fakechroot/changelog
+	  debian/tmp-fakechroot/usr/share/doc/fakechroot/changelog.Debian
 	@umask 022 \
 	  && export pwd="$$(pwd)" \
 	  && export ROOT="$$(pwd)/debian/tmp-fakechroot" \

@@ -3,7 +3,7 @@ Maintainer: Piotr Roszatycki <dexter@debian.org>
 Section: utils
 Priority: optional
 Standards-Version: 3.8.0
-Build-Depends: libc6-dev-i386 [amd64], libc6-dev-amd64 [i386], libc6-dev-powerpc [ppc64], libc6-dev-s390x [s390], libc6-dev-sparc64 [sparc], gcc-multilib [amd64 i386 powerpc s390 sparc], yada (>= 0.54)
+Build-Depends: lsb-release, libc6-dev-i386 [amd64], libc6-dev-amd64 [i386], libc6-dev-powerpc [ppc64], libc6-dev-s390x [s390], libc6-dev-sparc64 [sparc], gcc-multilib [amd64 i386 powerpc s390 sparc], yada (>= 0.54)
 Homepage: http://fakechroot.alioth.debian.org/
 Vcs-Browser: http://svn.debian.org/wsvn/fakechroot/trunk/
 Vcs-Svn: svn://svn.debian.org/fakechroot/trunk/
