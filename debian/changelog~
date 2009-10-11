@@ -1,7 +1,7 @@
 fakechroot (2.9-1ubuntu1) karmic; urgency=low
 
   * Fix FTBFS
-    - Changes to scandir( required for GLIB 2.10 (LP: #448669)
+    - Changes to scandir( required for GLIB 2.10
   * debian/control:
     - Changed Maintainer to MOTU
 

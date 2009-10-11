@@ -154,7 +154,7 @@ debian/build-stamp: debian/build-arch-stamp debian/build-indep-stamp
 	echo -E '                        --cache-file=../config.biarch.cache \';\
 	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
 	echo -E '                        --host=i386-linux \';\
-	echo -E '                        --libdir=/emul/ia32-linux/usr/lib \';\
+	echo -E '                        --libdir=/usr/lib32 \';\
 	echo -E '                        $$COMMON_CONFIG';\
 	echo -E '            popd';\
 	echo -E '            pushd build-tree-fake-biarch';\
@@ -163,7 +163,7 @@ debian/build-stamp: debian/build-arch-stamp debian/build-indep-stamp
 	echo -E '                        --cache-file=../config.biarch.cache \';\
 	echo -E '                        --build=$$DEB_BUILD_GNU_TYPE \';\
 	echo -E '                        --host=i386-linux \';\
-	echo -E '                        --libdir=/emul/ia32-linux/usr/lib \';\
+	echo -E '                        --libdir=/usr/lib32 \';\
 	echo -E '                        $$COMMON_CONFIG';\
 	echo -E '            popd';\
 	echo -E '            ;;';\
@@ -381,7 +381,7 @@ binary-package-fakechroot: check-root debian/tmp-fakechroot/DEBIAN/control
 	echo -E '';\
 	echo -E 'case "$$DEB_HOST_ARCH" in';\
 	echo -E '    amd64)';\
-	echo -E '        chmod -v u+s $$ROOT/emul/ia32-linux/usr/lib/*.so;;';\
+	echo -E '        chmod -v u+s $$ROOT/usr/lib32/*.so;;';\
 	echo -E '    ppc64)';\
 	echo -E '        chmod -v u+s $$ROOT/usr/lib32/*.so;;';\
 	echo -E '    i386|s390|sparc)';\
