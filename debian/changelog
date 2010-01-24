@@ -1,3 +1,11 @@
+fakechroot (2.9-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Put files in lib32 directories directly (Closes: #533002).
+  * Fix conflicting types for 'scandir' (Closes: #552891).
+
+ -- Luk Claes <luk@debian.org>  Sun, 24 Jan 2010 10:08:13 +0000
+
 fakechroot (2.9-1) unstable; urgency=medium
 
   * src/libfakechroot.c:
