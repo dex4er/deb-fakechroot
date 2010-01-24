@@ -1,11 +1,10 @@
-fakechroot (2.9-1ubuntu1) karmic; urgency=low
+fakechroot (2.9-1.1) unstable; urgency=low
 
-  * Fix FTBFS
-    - Changes to scandir( required for GLIB 2.10 (LP: #448669)
-  * debian/control:
-    - Changed Maintainer to MOTU
+  * Non-maintainer upload.
+  * Put files in lib32 directories directly (Closes: #533002).
+  * Fix conflicting types for 'scandir' (Closes: #552891).
 
- -- Joao Pinto <joao.pinto@getdeb.net>  Sun, 11 Oct 2009 13:30:54 +0100
+ -- Luk Claes <luk@debian.org>  Sun, 24 Jan 2010 10:08:13 +0000
 
 fakechroot (2.9-1) unstable; urgency=medium
 
