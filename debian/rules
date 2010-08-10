@@ -1,4 +1,49 @@
 #!/usr/bin/make -f
 
+COMMON_CONFIG := \
+    --prefix=/usr \
+    --mandir=/usr/share/man \
+    --disable-static \
+    --with-libpath=/usr/lib/fakechroot:/usr/lib64/fakechroot:/usr/lib32/fakechroot \
+    --disable-maintainer-mode \
+    --disable-dependency-tracking
+
+CFLAGS = -Wall -pedantic -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+CFLAGS += -O0
+else
+CFLAGS += -O2 -fno-strict-aliasing
+endif
+
 %:
 	dh $@
+
+override_dh_auto_configure: configure-lib configure-lib-biarch
+
+configure-lib:
+	mkdir -p build-tree-lib
+	cd build-tree-lib && \
+	echo ../configure \
+	    --cache-file=../config.cache \
+	    --build=$(DEB_BUILD_GNU_TYPE) \
+	    --host=$(DEB_HOST_GNU_TYPE) \
+	    $(COMMON_CONFIG)
+
+configure-lib-biarch:
+ifneq (,$(findstring :$(DEB_HOST_ARCH):,:amd64:i386:))
+	echo $(findstring :$(DEB_HOST_ARCH):,:amd64:i386:)
+	make -f debian/rules configure-lib-biarch-$(DEB_HOST_ARCH)
+else
+	echo $@
+endif
+
+configure-lib-biarch-amd64:
+	mkdir -p build-tree-lib-biarch
+	cd build-tree-lib-biarch && \
+	echo ../configure \
+	    --cache-file=../config.biarch.cache \
+	    --build=$(DEB_BUILD_GNU_TYPE) \
+	    --host=i386-linux \
+	    --libdir=/usr/lib32
+	    $(COMMON_CONFIG)
