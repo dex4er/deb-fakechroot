@@ -54,6 +54,10 @@ endif
 %:
 	dh $@
 
+override_dh_auto_clean:
+	test -f Makefile && make clean || true
+	rm -rf build-tree-*
+
 override_dh_auto_configure:
 	mkdir -p build-tree-lib
 	cd build-tree-lib && \
