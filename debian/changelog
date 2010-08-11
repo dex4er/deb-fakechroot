@@ -1,5 +1,6 @@
 fakechroot (2.9-2) unstable; urgency=low
 
+  * Switch to 3.0 (quilt) source format.
   * debian/rules, debian/packages:
     - Switched to debhelper.
   * debian/control:

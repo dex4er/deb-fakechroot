@@ -1,0 +1,4 @@
+usr/bin/*
+usr/lib*/*.so
+usr/lib*/fakechroot/*.so
+usr/share/man/man*/*

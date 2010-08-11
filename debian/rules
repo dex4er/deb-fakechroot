@@ -4,7 +4,6 @@ COMMON_CONFIG := \
     --prefix=/usr \
     --mandir=/usr/share/man \
     --disable-static \
-    --with-libpath=/usr/lib/fakechroot:/usr/lib64/fakechroot:/usr/lib32/fakechroot \
     --disable-maintainer-mode \
     --disable-dependency-tracking
 
@@ -16,34 +15,97 @@ else
 CFLAGS += -O2 -fno-strict-aliasing
 endif
 
+DEB_HOST_ARCH      := $(shell dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
+DEB_HOST_GNU_TYPE  := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE 2>/dev/null)
+DEB_BUILD_GNU_TYPE := $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE 2>/dev/null)
+
+ifneq (,$(findstring :$(DEB_HOST_ARCH):,:amd64:i386:ppc64:s390:sparc:))
+ifeq ($(DEB_HOST_ARCH),amd64)
+BIARCH_LIBDIR        := /usr/lib32
+BIARCH_HOST_GNU_TYPE := i486-linux-gnu
+BIARCH_CC            := gcc -m32
+endif
+ifeq ($(DEB_HOST_ARCH),i386)
+BIARCH_LIBDIR        := /usr/lib64
+BIARCH_HOST_GNU_TYPE := x86_64-linux-gnu
+BIARCH_CC            := gcc -m64
+endif
+ifeq ($(DEB_HOST_ARCH),ppc64)
+BIARCH_LIBDIR        := /usr/lib32
+BIARCH_HOST_GNU_TYPE := powerpc-linux-gnu
+BIARCH_CC            := gcc -m32
+endif
+ifeq ($(DEB_HOST_ARCH),s390)
+BIARCH_LIBDIR        := /usr/lib64
+BIARCH_HOST_GNU_TYPE := s390x-linux-gnu
+BIARCH_CC            := gcc -m64
+endif
+ifeq ($(DEB_HOST_ARCH),sparc)
+BIARCH_LIBDIR        := /usr/lib64
+BIARCH_HOST_GNU_TYPE := sparc64-linux-gnu
+BIARCH_CC            := gcc -m64
+endif
+LIBPATH := /usr/lib/fakechroot:$(BIARCH_LIBDIR)/fakechroot
+else
+BIARCH_HOST_GNU_TYPE :=
+LIBPATH := /usr/lib/fakechroot
+endif
+
 %:
 	dh $@
 
-override_dh_auto_configure: configure-lib configure-lib-biarch
-
-configure-lib:
+override_dh_auto_configure:
 	mkdir -p build-tree-lib
 	cd build-tree-lib && \
-	echo ../configure \
+	../configure \
+	    --with-libpath=$(LIBPATH) \
 	    --cache-file=../config.cache \
-	    --build=$(DEB_BUILD_GNU_TYPE) \
-	    --host=$(DEB_HOST_GNU_TYPE) \
 	    $(COMMON_CONFIG)
-
-configure-lib-biarch:
-ifneq (,$(findstring :$(DEB_HOST_ARCH):,:amd64:i386:))
-	echo $(findstring :$(DEB_HOST_ARCH):,:amd64:i386:)
-	make -f debian/rules configure-lib-biarch-$(DEB_HOST_ARCH)
-else
-	echo $@
-endif
-
-configure-lib-biarch-amd64:
+	
+	mkdir -p build-tree-fake
+	cd build-tree-fake && \
+	../fake/configure \
+	    --cache-file=../config.cache \
+	    $(COMMON_CONFIG)
+	
+ifneq (,$(BIARCH_HOST_GNU_TYPE))
 	mkdir -p build-tree-lib-biarch
 	cd build-tree-lib-biarch && \
-	echo ../configure \
+	CC="$(BIARCH_CC)" ../configure \
+	    --with-libpath=$(LIBPATH) \
 	    --cache-file=../config.biarch.cache \
 	    --build=$(DEB_BUILD_GNU_TYPE) \
-	    --host=i386-linux \
-	    --libdir=/usr/lib32
+	    --host=$(BIARCH_HOST_GNU_TYPE) \
+	    --libdir=$(BIARCH_LIBDIR) \
 	    $(COMMON_CONFIG)
+	
+	mkdir -p build-tree-fake-biarch
+	cd build-tree-fake-biarch && \
+	CC="$(BIARCH_CC)" ../fake/configure \
+	    --cache-file=../config.biarch.cache \
+	    --build=$(DEB_BUILD_GNU_TYPE) \
+	    --host=$(BIARCH_HOST_GNU_TYPE) \
+	    --libdir=$(BIARCH_LIBDIR) \
+	    $(COMMON_CONFIG)
+endif
+
+override_dh_auto_build:
+	cd build-tree-lib && make
+	cd build-tree-lib && make check
+	cd build-tree-fake && make
+ifneq (,$(BIARCH_HOST_GNU_TYPE))
+	cd build-tree-lib-biarch && make
+	cd build-tree-fake-biarch && make
+endif
+
+override_dh_auto_install:
+	cd build-tree-lib && make install DESTDIR=$(CURDIR)/debian/tmp
+	cd build-tree-fake && make install DESTDIR=$(CURDIR)/debian/tmp
+ifneq (,$(BIARCH_HOST_GNU_TYPE))
+	cd build-tree-lib-biarch && make install DESTDIR=$(CURDIR)/debian/tmp
+	cd build-tree-fake-biarch && make install DESTDIR=$(CURDIR)/debian/tmp
+endif
+
+override_dh_fixperms:
+	dh_fixperms
+	chmod u+s $(CURDIR)/debian/fakechroot/usr/lib*/*.so
