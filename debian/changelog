@@ -5,6 +5,7 @@ fakechroot (2.9-2) unstable; urgency=low
     - Switched to debhelper.
   * debian/control:
     - VCS switched to launchpad's bazaar.
+    - Dropped conflict on old libc6-i386.
   * debian/copyright:
     - Machine-readable.
 
