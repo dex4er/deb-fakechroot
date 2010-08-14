@@ -1,12 +1,5 @@
 #!/usr/bin/make -f
 
-COMMON_CONFIG := \
-    --prefix=/usr \
-    --mandir=/usr/share/man \
-    --disable-static \
-    --disable-maintainer-mode \
-    --disable-dependency-tracking
-
 CFLAGS = -Wall -pedantic -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -51,6 +44,14 @@ BIARCH_HOST_GNU_TYPE :=
 LIBPATH := /usr/lib/fakechroot
 endif
 
+COMMON_CONFIG := \
+    --prefix=/usr \
+    --mandir=/usr/share/man \
+    --with-libpath=$(LIBPATH) \
+    --disable-static \
+    --disable-maintainer-mode \
+    --disable-dependency-tracking
+
 %:
 	dh $@
 
@@ -62,13 +63,6 @@ override_dh_auto_configure:
 	mkdir -p build-tree-lib
 	cd build-tree-lib && \
 	../configure \
-	    --with-libpath=$(LIBPATH) \
-	    --cache-file=../config.cache \
-	    $(COMMON_CONFIG)
-	
-	mkdir -p build-tree-fake
-	cd build-tree-fake && \
-	../fake/configure \
 	    --cache-file=../config.cache \
 	    $(COMMON_CONFIG)
 	
@@ -76,16 +70,6 @@ ifneq (,$(BIARCH_HOST_GNU_TYPE))
 	mkdir -p build-tree-lib-biarch
 	cd build-tree-lib-biarch && \
 	CC="$(BIARCH_CC)" ../configure \
-	    --with-libpath=$(LIBPATH) \
-	    --cache-file=../config.biarch.cache \
-	    --build=$(DEB_BUILD_GNU_TYPE) \
-	    --host=$(BIARCH_HOST_GNU_TYPE) \
-	    --libdir=$(BIARCH_LIBDIR) \
-	    $(COMMON_CONFIG)
-	
-	mkdir -p build-tree-fake-biarch
-	cd build-tree-fake-biarch && \
-	CC="$(BIARCH_CC)" ../fake/configure \
 	    --cache-file=../config.biarch.cache \
 	    --build=$(DEB_BUILD_GNU_TYPE) \
 	    --host=$(BIARCH_HOST_GNU_TYPE) \
@@ -96,20 +80,12 @@ endif
 override_dh_auto_build:
 	cd build-tree-lib && make
 	cd build-tree-lib && make check
-	cd build-tree-fake && make
 ifneq (,$(BIARCH_HOST_GNU_TYPE))
 	cd build-tree-lib-biarch && make
-	cd build-tree-fake-biarch && make
 endif
 
 override_dh_auto_install:
 	cd build-tree-lib && make install DESTDIR=$(CURDIR)/debian/tmp
-	cd build-tree-fake && make install DESTDIR=$(CURDIR)/debian/tmp
 ifneq (,$(BIARCH_HOST_GNU_TYPE))
 	cd build-tree-lib-biarch && make install DESTDIR=$(CURDIR)/debian/tmp
-	cd build-tree-fake-biarch && make install DESTDIR=$(CURDIR)/debian/tmp
 endif
-
-override_dh_fixperms:
-	dh_fixperms
-	chmod u+s $(CURDIR)/debian/fakechroot/usr/lib*/*.so

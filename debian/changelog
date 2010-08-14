@@ -1,6 +1,7 @@
 fakechroot (2.9-2) unstable; urgency=low
 
   * Switch to 3.0 (quilt) source format.
+  * Dropped fake libfakechroot library.
   * debian/rules, debian/packages:
     - Switched to debhelper.
   * debian/control:
