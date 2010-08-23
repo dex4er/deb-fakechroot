@@ -56,7 +56,7 @@ COMMON_CONFIG := \
 	dh $@
 
 override_dh_auto_clean:
-	test -f Makefile && make clean || true
+	test -f Makefile && make distclean || true
 	rm -rf build-tree-*
 
 override_dh_auto_configure:
@@ -79,7 +79,7 @@ endif
 
 override_dh_auto_build:
 	cd build-tree-lib && make
-	cd build-tree-lib && make check
+	cd build-tree-lib && make test PROVE='prove -f'
 ifneq (,$(BIARCH_HOST_GNU_TYPE))
 	cd build-tree-lib-biarch && make
 endif
