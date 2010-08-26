@@ -1,13 +1,25 @@
-fakechroot (2.10-1) UNRELEASED; urgency=low
+fakechroot (2.10-1) unstable; urgency=low
 
-  * New upstream release.
-
- -- Piotr Roszatycki <dexter@debian.org>  Thu, 26 Aug 2010 22:35:17 +0200
-
-fakechroot (2.9-2) unstable; urgency=low
-
+  * New upstream release:
+    - Fixed "undefined symbol: rpl_malloc" error for compiled 32-bit library
+      on 64-bit architecture by dropping AC_FUNC_MALLOC in configure.ac.
+      Closes: #511296.
+    - Fixed chroot(2) function and bug when getcwd failed to return proper
+      paths when root included ".". Closes: #548691.
+    - Fixed readlink(2) function and bug when symlink targeted long path name.
+      Closes: #552258.
+    - Fixed __lxstat(3), __lxstat64(3), lstat(2) and lstat64(2) functions and
+      bug when debootstrap failed on dpkg's assertion `r == stab.st_size'.
+      Closes: #561991.
+    - New function popen(3). Closes: #582847.
+    - New function utimensat(2). Works with the latest /bin/cp -dp command.
+      Closes: #588508.
+    - Fixed an example session in manual page. Closes: #532091.
+    - Applied NMU. Closes: #566653.
+      - Put files in lib32 directories directly. Closes: #533002.
+      - Fix conflicting types for 'scandir'. Closes: #552891.
   * Switch to 3.0 (quilt) source format.
-  * Dropped fake libfakechroot library.
+  * Dropped fake libfakechroot library. Closes: #572111.
   * debian/rules, debian/packages:
     - Switched to debhelper.
   * debian/control:
@@ -16,7 +28,7 @@ fakechroot (2.9-2) unstable; urgency=low
   * debian/copyright:
     - Machine-readable.
 
- -- Piotr Roszatycki <dexter@debian.org>  Tue, 10 Aug 2010 14:59:35 +0200
+ -- Piotr Roszatycki <dexter@debian.org>  Thu, 26 Aug 2010 23:09:46 +0200
 
 fakechroot (2.9-1.1) unstable; urgency=low
 
