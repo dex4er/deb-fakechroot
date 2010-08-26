@@ -1,1 +1,2 @@
-scripts/*.sh
+scripts/restoremode.sh
+scripts/savemode.sh
