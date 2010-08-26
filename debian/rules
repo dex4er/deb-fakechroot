@@ -1,11 +1,11 @@
 #!/usr/bin/make -f
 
-CFLAGS = -Wall -pedantic -g
+CFLAGS = -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 CFLAGS += -O0
 else
-CFLAGS += -O2 -fno-strict-aliasing
+CFLAGS += -O2
 endif
 
 DEB_HOST_ARCH      := $(shell dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
@@ -79,7 +79,7 @@ endif
 
 override_dh_auto_build:
 	cd build-tree-lib && make
-	cd build-tree-lib && make test PROVE='prove -f'
+	cd build-tree-lib && make check
 ifneq (,$(BIARCH_HOST_GNU_TYPE))
 	cd build-tree-lib-biarch && make
 endif
