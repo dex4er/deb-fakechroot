@@ -89,3 +89,10 @@ override_dh_auto_install:
 ifneq (,$(BIARCH_HOST_GNU_TYPE))
 	cd build-tree-lib-biarch && make install DESTDIR=$(CURDIR)/debian/tmp
 endif
+
+override_dh_shlibdeps:
+	dh_shlibdeps -X/usr/lib32/fakechroot/ -X/usr/lib64/fakechroot/
+ifneq (,$(BIARCH_HOST_GNU_TYPE))
+	dh_shlibdeps -X/usr/lib/fakechroot/ -- -pshlibs-biarch -dSuggests
+	#dpkg-shlibdeps -pshlibs-biarch -dSuggests debian/tmp/usr/lib??/fakechroot/libfakechroot.so
+endif

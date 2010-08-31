@@ -18,6 +18,7 @@ Vcs-Bzr: lp:fakechroot
 Package: fakechroot
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Suggests: ${shlibs-biarch:Suggests}
 Description: gives a fake chroot environment
  This package provides a library which overrides libc functions, so
  it is possible to use root-specific tools without root privileges.
