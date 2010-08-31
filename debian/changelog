@@ -2,6 +2,7 @@ fakechroot (2.10-2) unstable; urgency=low
 
   * Fixed FTBFS on kFreeBSD and skip some tests which fail on this arch.
   * Biarch library dependencies moved to "Suggests". Closes: #594818.
+  * Ignore warnings about missing manpages for fakechroot's wrappers.
 
  -- Piotr Roszatycki <dexter@debian.org>  Tue, 31 Aug 2010 16:21:12 +0200
 
