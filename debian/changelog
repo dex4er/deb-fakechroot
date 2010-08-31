@@ -1,3 +1,10 @@
+fakechroot (2.10-2) unstable; urgency=low
+
+  * debian/rules:
+    - Fix FTBFS on kFreeBSD and skip some tests which fail on this arch.
+
+ -- Piotr Roszatycki <dexter@nigella>  Tue, 31 Aug 2010 16:21:12 +0200
+
 fakechroot (2.10-1) unstable; urgency=low
 
   * New upstream release:
