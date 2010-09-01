@@ -9,7 +9,8 @@ Build-Depends:
  libc6-dev-powerpc [ppc64],
  libc6-dev-s390x [s390],
  libc6-dev-sparc64 [sparc],
- gcc-multilib [amd64 i386 powerpc s390 sparc],
+ libc0.1-dev-i386 [kfreebsd-amd64],
+ gcc-multilib [amd64 i386 powerpc s390 sparc kfreebsd-amd64],
  debhelper (>= 7.0.50~)
 Homepage: http://fakechroot.alioth.debian.org/
 Vcs-Browser: http://bazaar.launchpad.net/~dexter/fakechroot/sid/files

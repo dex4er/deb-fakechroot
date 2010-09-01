@@ -12,7 +12,7 @@ DEB_HOST_ARCH      := $(shell dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
 DEB_HOST_GNU_TYPE  := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE 2>/dev/null)
 DEB_BUILD_GNU_TYPE := $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE 2>/dev/null)
 
-ifneq (,$(findstring :$(DEB_HOST_ARCH):,:amd64:i386:ppc64:s390:sparc:))
+ifneq (,$(findstring :$(DEB_HOST_ARCH):,:amd64:i386:ppc64:s390:sparc:kfreebsd-amd64:))
 ifeq ($(DEB_HOST_ARCH),amd64)
 BIARCH_LIBDIR        := /usr/lib32
 BIARCH_HOST_GNU_TYPE := i486-linux-gnu
@@ -37,6 +37,11 @@ ifeq ($(DEB_HOST_ARCH),sparc)
 BIARCH_LIBDIR        := /usr/lib64
 BIARCH_HOST_GNU_TYPE := sparc64-linux-gnu
 BIARCH_CC            := gcc -m64
+endif
+ifeq ($(DEB_HOST_ARCH),kfreebsd-amd64)
+BIARCH_LIBDIR        := /usr/lib32
+BIARCH_HOST_GNU_TYPE := i486-kfreebsd-gnu
+BIARCH_CC            := gcc -m32
 endif
 LIBPATH := /usr/lib/fakechroot:$(BIARCH_LIBDIR)/fakechroot
 else
@@ -94,5 +99,4 @@ override_dh_shlibdeps:
 	dh_shlibdeps -X/usr/lib32/fakechroot/ -X/usr/lib64/fakechroot/
 ifneq (,$(BIARCH_HOST_GNU_TYPE))
 	dh_shlibdeps -X/usr/lib/fakechroot/ -- -pshlibs-biarch -dSuggests
-	#dpkg-shlibdeps -pshlibs-biarch -dSuggests debian/tmp/usr/lib??/fakechroot/libfakechroot.so
 endif

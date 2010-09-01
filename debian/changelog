@@ -1,6 +1,7 @@
 fakechroot (2.10-2) unstable; urgency=low
 
   * Fixed FTBFS on kFreeBSD and skip some tests which fail on this arch.
+  * Added kfreebsd-amd64 to biarch architectures.
   * Biarch library dependencies moved to "Suggests". Closes: #594818.
   * Ignore warnings about missing manpages for fakechroot's wrappers.
 
