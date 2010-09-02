@@ -1,0 +1,3 @@
+010-kfreebsd_ldd.patch
+020-kfreebsd_test_debootstrap.patch
+030-kfreebsd_test_t.patch

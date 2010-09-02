@@ -1,0 +1,42 @@
+=== modified file 'test/t/popen.t'
+--- old/test/t/popen.t	2010-08-26 20:35:15 +0000
++++ new/test/t/popen.t	2010-09-02 09:01:38 +0000
+@@ -16,7 +16,7 @@
+         echo 'something' > testtree/$chroot-file
+         echo "cat /$chroot-file" > testtree/$chroot-popen.sh
+ 
+-        t=`( $srcdir/$chroot.sh testtree /bin/test-popen 'trap "exit 0" USR1; for i in $(seq 1 10240); do echo $$; done' | while read pid; do readlink /proc/$pid/exe; kill -USR1 $pid; exit; done ) 2>&1`
++        t=`($srcdir/$chroot.sh testtree /bin/test-popen 'echo $$ > PID; while :; do sleep 1; done' &); sleep 3; pid=$(cat testtree/PID 2>&1); readlink /proc/$pid/exe 2>&1; kill $pid 2>/dev/null`
+         test "$t" = "$fakedir/bin/sh" || not
+         ok "$chroot popen shell is" $t
+ 
+
+=== modified file 'test/t/system.t'
+--- old/test/t/system.t	2010-08-26 20:35:15 +0000
++++ new/test/t/system.t	2010-09-02 09:01:38 +0000
+@@ -16,7 +16,7 @@
+         echo 'something' > testtree/$chroot-file
+         echo "cat /$chroot-file" > testtree/$chroot-system.sh
+ 
+-        t=`( $srcdir/$chroot.sh testtree /bin/test-system 'trap "exit 0" USR1; for i in $(seq 1 10240); do echo $$; done' | while read pid; do readlink /proc/$pid/exe; kill -USR1 $pid; exit; done ) 2>&1`
++        t=`($srcdir/$chroot.sh testtree /bin/test-system 'echo $$ > PID; while :; do sleep 1; done' &); sleep 3; pid=$(cat testtree/PID 2>&1); readlink /proc/$pid/exe 2>&1; kill $pid 2>/dev/null`
+         test "$t" = "$fakedir/bin/sh" || not
+         ok "$chroot system shell is" $t
+ 
+
+=== modified file 'test/testtree.sh'
+--- old/test/testtree.sh	2010-08-26 20:35:15 +0000
++++ new/test/testtree.sh	2010-09-02 09:01:38 +0000
+@@ -70,9 +70,11 @@
+ done
+ 
+ for p in \
++    'ld-*.so' \
+     'ld-linux.so.*' \
+     'ld-linux-x86-64.so.*' \
+     'ld-uClibc.so.*' \
++    'ld.so.*' \
+     'libacl.so.*' \
+     'libattr.so.*' \
+     'libc.so.*' \
+

@@ -9,9 +9,7 @@ run () {
 
 vendor=${VENDOR:-`lsb_release -s -i`}
 release=${RELEASE:-`lsb_release -s -c`}
-type=`dpkg-architecture -qDEB_HOST_GNU_TYPE`
-systype=${type#*-}
-arch=${ARCH:-`dpkg-architecture -t$(arch)-$systype -qDEB_HOST_ARCH 2>/dev/null`}
+arch=${ARCH:-`dpkg-architecture -t$(arch)-linux-gnu -qDEB_HOST_ARCH 2>/dev/null`}
 
 if [ $# -gt 0 ]; then
     destdir=$1
