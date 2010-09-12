@@ -1,3 +1,14 @@
+fakechroot (2.11-1) unstable; urgency=low
+
+  * New upstream release:
+    - All Debian patches were applied upstream.
+    - Fixed getsockname(2) and getpeername(2) functions and bug when
+      "host 127.0.0.1" is called. Closes: #596435.
+    - Fixed canonicalize_file_name(3) function and bug when "man-db" command
+      is called.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Sun, 12 Sep 2010 20:15:43 +0200
+
 fakechroot (2.10-2) unstable; urgency=low
 
   * Fixed FTBFS on kFreeBSD and skip some tests which fail on this arch.
