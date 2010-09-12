@@ -84,7 +84,7 @@ endif
 
 override_dh_auto_build:
 	cd build-tree-lib && make
-	cd build-tree-lib && make check
+	cd build-tree-lib && make test
 ifneq (,$(BIARCH_HOST_GNU_TYPE))
 	cd build-tree-lib-biarch && make
 endif
