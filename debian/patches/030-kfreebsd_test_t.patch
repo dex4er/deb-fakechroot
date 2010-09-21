@@ -1,0 +1,32 @@
+commit 6f32281f7707f6a71289043d5202e83d24935a63
+Author: Piotr Roszatycki <piotr.roszatycki@gmail.com>
+Date:   Mon Sep 20 22:13:24 2010 +0200
+
+    Fix compatiblity for GNU/kFreeBSD
+
+diff --git a/test/t/popen.t b/test/t/popen.t
+index 95136ae..89463de 100755
+--- a/test/t/popen.t
++++ b/test/t/popen.t
+@@ -6,7 +6,7 @@ srcdir=${srcdir:-.}
+ prepare 4
+ 
+ case "`uname -s`" in
+-    Linux|KFreeBSD)
++    Linux|GNU/kFreeBSD)
+         exe=exe;;
+     *)
+         exe=file;;
+diff --git a/test/t/system.t b/test/t/system.t
+index a14bf1c..4d88424 100755
+--- a/test/t/system.t
++++ b/test/t/system.t
+@@ -6,7 +6,7 @@ srcdir=${srcdir:-.}
+ prepare 4
+ 
+ case "`uname -s`" in
+-    Linux|KFreeBSD)
++    Linux|GNU/kFreeBSD)
+         exe=exe;;
+     *)
+         exe=file;;
