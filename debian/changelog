@@ -1,6 +1,7 @@
 fakechroot (2.11-2) unstable; urgency=low
 
   * Fixed FTBFS on kFreeBSD. Closes: #596637.
+  * More verbose "make test".
 
  -- Piotr Roszatycki <dexter@debian.org>  Tue, 21 Sep 2010 15:56:37 +0200
 
