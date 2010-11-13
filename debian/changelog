@@ -1,3 +1,12 @@
+fakechroot (2.12-1) unstable; urgency=low
+
+  * New upstream release:
+    - All Debian patches were applied upstream.
+    - New function statvfs: "apt-get" command should work if called in
+      non-Debian host system.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Sat, 13 Nov 2010 20:16:46 +0100
+
 fakechroot (2.11-2) unstable; urgency=low
 
   * Fixed FTBFS on kFreeBSD. Closes: #596637.
