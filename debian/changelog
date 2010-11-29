@@ -1,3 +1,11 @@
+fakechroot (2.13-1) unstable; urgency=low
+
+  * New upstream release:
+    - Fixes were made for realpath(3) and ftw(3) functions. apt-ftparchive(1)
+      command currently is working. Closes: #604082.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Mon, 29 Nov 2010 15:10:02 +0100
+
 fakechroot (2.12-1) unstable; urgency=low
 
   * New upstream release:
