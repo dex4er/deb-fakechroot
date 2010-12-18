@@ -1,12 +1,6 @@
 #!/usr/bin/make -f
 
-CFLAGS = -Wall -g
-
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-CFLAGS += -O0
-else
-CFLAGS += -O2
-endif
+CC = gcc
 
 DEB_HOST_ARCH      := $(shell dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null)
 DEB_HOST_GNU_TYPE  := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE 2>/dev/null)
@@ -16,32 +10,32 @@ ifneq (,$(findstring :$(DEB_HOST_ARCH):,:amd64:i386:ppc64:s390:sparc:kfreebsd-am
 ifeq ($(DEB_HOST_ARCH),amd64)
 BIARCH_LIBDIR        := /usr/lib32
 BIARCH_HOST_GNU_TYPE := i486-linux-gnu
-BIARCH_CC            := gcc -m32
+BIARCH_CC            := $(CC) -m32
 endif
 ifeq ($(DEB_HOST_ARCH),i386)
 BIARCH_LIBDIR        := /usr/lib64
 BIARCH_HOST_GNU_TYPE := x86_64-linux-gnu
-BIARCH_CC            := gcc -m64
+BIARCH_CC            := $(CC) -m64
 endif
 ifeq ($(DEB_HOST_ARCH),ppc64)
 BIARCH_LIBDIR        := /usr/lib32
 BIARCH_HOST_GNU_TYPE := powerpc-linux-gnu
-BIARCH_CC            := gcc -m32
+BIARCH_CC            := $(CC) -m32
 endif
 ifeq ($(DEB_HOST_ARCH),s390)
 BIARCH_LIBDIR        := /usr/lib64
 BIARCH_HOST_GNU_TYPE := s390x-linux-gnu
-BIARCH_CC            := gcc -m64
+BIARCH_CC            := $(CC) -m64
 endif
 ifeq ($(DEB_HOST_ARCH),sparc)
 BIARCH_LIBDIR        := /usr/lib64
 BIARCH_HOST_GNU_TYPE := sparc64-linux-gnu
-BIARCH_CC            := gcc -m64
+BIARCH_CC            := $(CC) -m64
 endif
 ifeq ($(DEB_HOST_ARCH),kfreebsd-amd64)
 BIARCH_LIBDIR        := /usr/lib32
 BIARCH_HOST_GNU_TYPE := i486-kfreebsd-gnu
-BIARCH_CC            := gcc -m32
+BIARCH_CC            := $(CC) -m32
 endif
 LIBPATH := /usr/lib/fakechroot:$(BIARCH_LIBDIR)/fakechroot
 else
@@ -69,16 +63,18 @@ override_dh_auto_configure:
 	mkdir -p build-tree-lib
 	cd build-tree-lib && \
 	../configure \
-	    $(COMMON_CONFIG)
+	    $(COMMON_CONFIG) \
+	    CC="$(CC)"
 	
 ifneq (,$(BIARCH_HOST_GNU_TYPE))
 	mkdir -p build-tree-lib-biarch
 	cd build-tree-lib-biarch && \
-	CC="$(BIARCH_CC)" ../configure \
+	../configure \
 	    --build=$(DEB_BUILD_GNU_TYPE) \
 	    --host=$(BIARCH_HOST_GNU_TYPE) \
 	    --libdir=$(BIARCH_LIBDIR) \
-	    $(COMMON_CONFIG)
+	    $(COMMON_CONFIG) \
+	    CC="$(BIARCH_CC)"
 endif
 
 override_dh_auto_build:
