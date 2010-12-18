@@ -50,6 +50,7 @@ LIBPATH := /usr/lib/fakechroot
 endif
 
 COMMON_CONFIG := \
+    --config-cache \
     --prefix=/usr \
     --mandir=/usr/share/man \
     --with-libpath=$(LIBPATH) \
@@ -68,14 +69,12 @@ override_dh_auto_configure:
 	mkdir -p build-tree-lib
 	cd build-tree-lib && \
 	../configure \
-	    --cache-file=../config.cache \
 	    $(COMMON_CONFIG)
 	
 ifneq (,$(BIARCH_HOST_GNU_TYPE))
 	mkdir -p build-tree-lib-biarch
 	cd build-tree-lib-biarch && \
 	CC="$(BIARCH_CC)" ../configure \
-	    --cache-file=../config.biarch.cache \
 	    --build=$(DEB_BUILD_GNU_TYPE) \
 	    --host=$(BIARCH_HOST_GNU_TYPE) \
 	    --libdir=$(BIARCH_LIBDIR) \
