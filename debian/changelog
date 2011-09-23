@@ -1,11 +1,13 @@
 fakechroot (2.14-2) unstable; urgency=low
 
+  * Multiarch support.  Thanks to Johannes Schauer.
+  * Splitting package into fakechroot and libfakechroot.
   * debian/copyright:
     - Added all missing licenses to copyright file.
   * 010_fts_FAKECHROOT_PATH_MAX.patch:
     - Use FAKECHROOT_PATH_MAX macro rather than MAXPATHLEN.
 
- -- Piotr Roszatycki <dexter@debian.org>  Wed, 22 Dec 2010 14:14:46 +0100
+ -- Piotr Roszatycki <dexter@debian.org>  Fri, 23 Sep 2011 17:25:33 +0200
 
 fakechroot (2.14-1) unstable; urgency=low
 
