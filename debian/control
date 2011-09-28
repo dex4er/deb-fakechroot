@@ -10,7 +10,7 @@ Vcs-Browser: http://bazaar.launchpad.net/~dexter/fakechroot/sid/files
 Vcs-Bzr: lp:fakechroot
 
 Package: fakechroot
-Architecture: any
+Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends},
          libfakechroot (= ${binary:Version})
 Description: gives a fake chroot environment
