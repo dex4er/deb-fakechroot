@@ -1,2 +1,1 @@
-binary-without-manpage usr/bin/ldconfig.fakechroot
 binary-without-manpage usr/bin/ldd.fakechroot
