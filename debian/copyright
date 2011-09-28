@@ -66,7 +66,7 @@ Files: debian/*
 Copyright: 2003-2010, Piotr Roszatycki <dexter@debian.org>
 License: GPL-2+
 
-License: BSD-3-Clause
+License: BSD-3-clause
  Copyright (c) The Regents of the University of California.
  All rights reserved.
  .
