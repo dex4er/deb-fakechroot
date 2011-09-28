@@ -1,3 +1,9 @@
+fakechroot (2.15-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Wed, 28 Sep 2011 22:24:04 +0200
+
 fakechroot (2.14-2) unstable; urgency=low
 
   * Multiarch support.  Thanks to Johannes Schauer.
