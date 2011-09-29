@@ -1,11 +1,16 @@
 fakechroot (2.15-1) UNRELEASED; urgency=low
 
-  * New upstream release.
-  * Multiarch support.  Thanks to Johannes Schauer.
-  * Splitting package into fakechroot and libfakechroot.
-  * debian/copyright:
-    - Added all missing licenses to copyright file.
-  * Attached more examples.
+  * New upstream release:
+    - New function faccessat(2) was added.  It fixes "test -r" command.
+      Thanks to Johannes Schauer.  Closes: #641079.
+    - The popen(3) function were reimplemented based on OpenBSD source to
+      prevent some coredumps with newer GNU C Library.  Closes: #637119.
+    - Manpage explains that fakeroot should be called in the fakechroot
+      environment to prevent some problems with incorrect order of preloaded
+      libraries.  Closes: #611156.
+  * Multiarch support.  Splitting package into fakechroot and libfakechroot.
+    Thanks to Johannes Schauer.  Closes: #632954, #635625
+  * Attached example for debootstrap usage to fakechroot package.
 
  -- Piotr Roszatycki <dexter@debian.org>  Wed, 28 Sep 2011 22:24:04 +0200
 
