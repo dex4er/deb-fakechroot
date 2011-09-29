@@ -1,6 +1,6 @@
-Format-Specification: http://dep.debian.net/deps/dep5/
-Name: fakechroot
-Maintainer: Piotr Roszatycki <dexter@debian.org>
+Format: http://dep.debian.net/deps/dep5/
+Upstream-Name: fakechroot
+Upstream-Contact: Piotr Roszatycki <dexter@debian.org>
 Source: http://github.com/fakechroot/fakechroot/downloads
 
 Files: *
