@@ -1,4 +1,4 @@
-fakechroot (2.15-1) UNRELEASED; urgency=low
+fakechroot (2.15-1) unstable; urgency=low
 
   * New upstream release:
     - New function faccessat(2) was added.  It fixes "test -r" command.
@@ -12,7 +12,7 @@ fakechroot (2.15-1) UNRELEASED; urgency=low
     Thanks to Johannes Schauer.  Closes: #632954, #635625
   * Attached example for debootstrap usage to fakechroot package.
 
- -- Piotr Roszatycki <dexter@debian.org>  Wed, 28 Sep 2011 22:24:04 +0200
+ -- Piotr Roszatycki <dexter@debian.org>  Fri, 30 Sep 2011 14:07:46 +0200
 
 fakechroot (2.14-1) unstable; urgency=low
 
