@@ -46,6 +46,11 @@ Files: popen.c
 Copyright: 1988, 1993 The Regents of the University of California.
 License: BSD-3-clause
 
+Files: rawmemchr.c
+Copyright: 2002 Manuel Novoa III
+           2000-2005 Erik Andersen <andersen@uclibc.org>
+License: LGPL
+
 Files: realpath.c
 Copyright: 1996-2010 Free Software Foundation, Inc.
 License: LGPL
