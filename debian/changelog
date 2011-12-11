@@ -1,9 +1,9 @@
-fakechroot (2.16~rc1-1) UNRELEASED; urgency=low
+fakechroot (2.16-1) UNRELEASED; urgency=low
 
   * New upstream release.
   * Library path is added to ld.so.conf.
 
- -- Piotr Roszatycki <dexter@debian.org>  Sun, 04 Dec 2011 19:25:55 +0100
+ -- Piotr Roszatycki <dexter@debian.org>  Sun, 11 Dec 2011 13:30:18 +0100
 
 fakechroot (2.15-1) unstable; urgency=low
 
