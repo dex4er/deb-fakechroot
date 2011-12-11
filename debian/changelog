@@ -1,4 +1,4 @@
-fakechroot (2.16-1) UNRELEASED; urgency=low
+fakechroot (2.16-1) unstable; urgency=low
 
   * New upstream release:
     - Library path is added to ld.so.conf.
