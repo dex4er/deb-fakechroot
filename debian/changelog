@@ -1,7 +1,9 @@
 fakechroot (2.16-1) UNRELEASED; urgency=low
 
-  * New upstream release.
-  * Library path is added to ld.so.conf.
+  * New upstream release:
+    - Library path is added to ld.so.conf.
+    - Chroot ld.so.conf is added to LD_LIBRARY_PATH.  Closes: #476528.
+  * debootstrap works with default, buildd and minbase variants.
 
  -- Piotr Roszatycki <dexter@debian.org>  Sun, 11 Dec 2011 13:30:18 +0100
 
