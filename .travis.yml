@@ -5,8 +5,8 @@ install:
   - sudo apt-get install -qq git-buildpackage
   - sudo apt-get install -qq debhelper
 before_script:
-  - git fetch origin upstream
-  - git fetch origin pristine-tar
+  - git fetch origin +upstream:upstream
+  - git fetch origin +pristine-tar:pristine-tar
 script: git-buildpackage -uc -us
 branches:
   only:
