@@ -7,7 +7,7 @@ install:
 before_script:
   - git fetch origin +upstream:upstream
   - git fetch origin +pristine-tar:pristine-tar
-script: git-buildpackage -uc -us
+script: git-buildpackage -uc -us --no-lintian && lintian --fail-on-warnings --color always --info
 branches:
   only:
     - master
