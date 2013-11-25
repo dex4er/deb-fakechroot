@@ -3,7 +3,7 @@ before_install:
   - sudo apt-get update -qq
 install:
   - sudo apt-get install -qq git-buildpackage
-  - sudo apt-get install -qq debhelper
+  - sudo apt-get install -qq debhelper dh-autoreconf
 before_script:
   - git fetch origin +upstream:upstream
   - git fetch origin +pristine-tar:pristine-tar
