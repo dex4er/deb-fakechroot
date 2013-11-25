@@ -1,76 +1,142 @@
-Format: http://dep.debian.net/deps/dep5/
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: fakechroot
 Upstream-Contact: Piotr Roszatycki <dexter@debian.org>
 Source: http://github.com/fakechroot/fakechroot/downloads
 
 Files: *
-Copyright: 2003, 2005, 2007-2011 Piotr Roszatycki <dexter@debian.org>
+Copyright: 2003, 2005, 2007-2011, 2013 Piotr Roszatycki <dexter@debian.org>
            2007 Mark Eichin <eichin@metacarta.com>
            2006, 2007 Alexander Shishkin <virtuoso@slind.org>
            2006, 2007 Lionel Tricon <lionel.tricon@free.fr>
 License: LGPL
 
-Files: execl.c
+Files: debian/*
+Copyright: 2003-2010, Piotr Roszatycki <dexter@debian.org>
+License: GPL-2+
+
+Files: src/__opendir2.c
+Copyright: 1983, 1993 The Regents of the University of California.
+           2000 Daniel Eischen.
+License: BSD-3-clause
+
+Files: src/clearenv.c
+Copyright: 1992,95,96,97,98,99,2000,2001 Free Software Foundation, Inc.
+License: LGPL
+
+Files: src/dedotdot.c
+Copyright: 1999,2000 by Jef Poskanzer <jef@mail.acme.com>.
+License: BSD-2-clause
+
+Files: src/execl.c
 Copyright: 1991,92,94,97,98,99,2002,2005 Free Software Foundation, Inc.
 License: LGPL
 
-Files: execle.c
+Files: src/execle.c
 Copyright: 1991,97,98,99,2002,2005 Free Software Foundation, Inc.
 License: LGPL
 
-Files: execlp.c
+Files: src/execlp.c
 Copyright: 1991,93,96,97,98,99,2002,2005 Free Software Foundation, Inc.
 License: LGPL
 
-Files: execvp.c
+Files: src/execvp.c
 Copyright: 1991,92, 1995-99, 2002, 2004, 2005, 2007, 2009 Free Software
            Foundation, Inc.
 License: LGPL
 
-Files: fts.c
+Files: src/fts.c
 Copyright: 1990, 1993, 1994 The Regents of the University of California.
 License: BSD-3-clause
 
-Files: ftw.c ftw64.c
+Files: src/ftw.c ftw64.c
 Copyright: 1996-2004, 2006-2008, 2010 Free Software Foundation, Inc.
            This file is part of the GNU C Library.
            Contributed by Ulrich Drepper <drepper@cygnus.com>, 1996.
 License: LGPL
 
-Files: __opendir2.c
-Copyright: 1983, 1993 The Regents of the University of California.
-           2000 Daniel Eischen.
-License: BSD-3-clause
+Files: src/getcwd_real.c
+Copyright: 1989, 1991, 1993 The Regents of the University of California.
+           2000-2006 Erik Andersen <andersen@uclibc.org>
+License: BSD-3-clause and LGPL
 
-Files: popen.c
+Files: src/popen.c
 Copyright: 1988, 1993 The Regents of the University of California.
 License: BSD-3-clause
 
-Files: rawmemchr.c
+Files: src/rawmemchr.c
 Copyright: 2002 Manuel Novoa III
            2000-2005 Erik Andersen <andersen@uclibc.org>
 License: LGPL
 
-Files: realpath.c
+Files: src/realpath.c
 Copyright: 1996-2010 Free Software Foundation, Inc.
 License: LGPL
 
-Files: rpl_lstat.c
+Files: src/rpl_lstat.c
 Copyright: 1997-2006, 2008-2010 Free Software Foundation, Inc.
 License: LGPL
 
-Files: stpcpy.c
+Files: src/setenv,c
+Copyright: 1992,95,96,97,98,99,2000,2001 Free Software Foundation, Inc.
+License: LGPL
+
+Files: src/stpcpy.c
 Copyright: 1992, 1995, 1997-1998, 2006, 2009-2010 Free Software
            Foundation, Inc.
 License: LGPL
 
-Files: strchrnul.c
+Files: src/strchrnul.c
 Copyright: 2003, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
 License: LGPL
 
-Files: debian/*
-Copyright: 2003-2010, Piotr Roszatycki <dexter@debian.org>
-License: GPL-2+
+Files: src/strlcpy.c
+Copyright: 1998 Todd C. Miller <Todd.Miller@courtesan.com>
+License: BSD-1-clause
+
+Files: src/unsetenv.c
+Copyright: 1992,95,96,97,98,99,2000,2001 Free Software Foundation, Inc.
+License: LGPL
+
+License: BSD-1-clause
+ Copyright (c) The Regents of the University of California.
+ All rights reserved.
+ .
+ Permission to use, copy, modify, and distribute this software for any
+ purpose with or without fee is hereby granted, provided that the above
+ copyright notice and this permission notice appear in all copies.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+License: BSD-2-clause
+ Copyright (c) The Regents of the University of California.
+ All rights reserved.
+ .
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
 License: BSD-3-clause
  Copyright (c) The Regents of the University of California.
