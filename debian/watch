@@ -1,2 +1,2 @@
 version=3
-http://github.com/fakechroot/fakechroot/downloads /downloads/fakechroot/fakechroot/fakechroot-(.*)\.tar\.gz
+https://github.com/dex4er/fakechroot/releases /dex4er/fakechroot/archive/master/(.*)\.tar\.gz
