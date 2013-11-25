@@ -1,6 +1,8 @@
 fakechroot (2.17-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Use dh_autoreconf to update config.guess and config.sub for arm64. Thanks
+    to Colin Watson. Closes: #726161.
 
  -- Piotr Roszatycki <dexter@debian.org>  Mon, 25 Nov 2013 12:13:28 +0100
 
