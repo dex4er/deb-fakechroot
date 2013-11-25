@@ -19,7 +19,7 @@ Copyright: 1983, 1993 The Regents of the University of California.
            2000 Daniel Eischen.
 License: BSD-3-clause
 
-Files: src/clearenv.c
+Files: src/clearenv.c src/setenv.c src/unsetenv.c
 Copyright: 1992,95,96,97,98,99,2000,2001 Free Software Foundation, Inc.
 License: LGPL
 
@@ -48,7 +48,7 @@ Files: src/fts.c
 Copyright: 1990, 1993, 1994 The Regents of the University of California.
 License: BSD-3-clause
 
-Files: src/ftw.c ftw64.c
+Files: src/ftw.c src/ftw64.c
 Copyright: 1996-2004, 2006-2008, 2010 Free Software Foundation, Inc.
            This file is part of the GNU C Library.
            Contributed by Ulrich Drepper <drepper@cygnus.com>, 1996.
@@ -76,10 +76,6 @@ Files: src/rpl_lstat.c
 Copyright: 1997-2006, 2008-2010 Free Software Foundation, Inc.
 License: LGPL
 
-Files: src/setenv,c
-Copyright: 1992,95,96,97,98,99,2000,2001 Free Software Foundation, Inc.
-License: LGPL
-
 Files: src/stpcpy.c
 Copyright: 1992, 1995, 1997-1998, 2006, 2009-2010 Free Software
            Foundation, Inc.
@@ -92,10 +88,6 @@ License: LGPL
 Files: src/strlcpy.c
 Copyright: 1998 Todd C. Miller <Todd.Miller@courtesan.com>
 License: BSD-1-clause
-
-Files: src/unsetenv.c
-Copyright: 1992,95,96,97,98,99,2000,2001 Free Software Foundation, Inc.
-License: LGPL
 
 License: BSD-1-clause
  Copyright (c) The Regents of the University of California.
