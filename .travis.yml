@@ -7,7 +7,7 @@ install:
 before_script:
   - git fetch origin +upstream:upstream
   - git fetch origin +pristine-tar:pristine-tar
-script: git-buildpackage --git-builder="debuild --no-lintian -i'^\.git/|^\.gitignore$|^\.travis.yml$|^\.gbp\.conf$' -I" -uc -us && lintian --fail-on-warnings --color always --info ../*.changes
+script: git-buildpackage --git-builder="debuild --no-lintian -i'^\.git/|^\.gitignore$|^\.travis.yml$|^\.gbp\.conf$' -I" -uc -us && lintian --dont-check-part standards-version --fail-on-warnings --color always --info ../*.changes
 branches:
   only:
     - master
