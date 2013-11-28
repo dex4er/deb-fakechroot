@@ -2,8 +2,9 @@ fakechroot (2.17-1) UNRELEASED; urgency=low
 
   * New upstream release:
     - It is safe to use relative paths which won't escape from fake chroot.
-      Closes: #663967.
-    - More bugfixes. Closes: #631390.
+      Closes: #533560, #582478, #582479, #663967.
+    - More bugfixes. Closes: #631390, #664121, #691538, #697465, #700816,
+      #720641, #720643, #720645, #720647, #720648.
   * Use dh_autoreconf to update config.guess and config.sub for arm64. Thanks
     to Colin Watson. Closes: #726161.
 
