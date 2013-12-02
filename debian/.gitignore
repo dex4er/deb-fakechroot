@@ -1,0 +1,6 @@
+/autoreconf.*
+/*.substvars
+/files
+/tmp/
+/fakechroot/
+/libfakechroot/
