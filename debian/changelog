@@ -1,3 +1,9 @@
+fakechroot (2.17.1-1~bpo72+1) wheezy-backports; urgency=low
+
+  * Debian wheezy backport.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Sat, 07 Dec 2013 15:59:56 +0100
+
 fakechroot (2.17.1-1) unstable; urgency=low
 
   * New upstream release:
