@@ -2,11 +2,13 @@ Source: fakechroot
 Maintainer: Piotr Roszatycki <dexter@debian.org>
 Section: utils
 Priority: optional
-Standards-Version: 3.9.5
-Build-Depends: debhelper (>= 8.1.3), dh-autoreconf
-Homepage: http://fakechroot.alioth.debian.org/
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=fakechroot/fakechroot.git
-Vcs-Git: https://alioth.debian.org/anonscm/git/fakechroot/fakechroot.git
+Build-Depends:
+  debhelper (>= 9),
+  dh-autoreconf
+Standards-Version: 3.9.6
+Homepage: https://github.com/dex4er/fakechroot
+VCS-Git: https://github.com/dex4er/deb-fakechroot.git
+VCS-Browser: https://github.com/dex4er/deb-fakechroot
 
 Package: fakechroot
 Architecture: all

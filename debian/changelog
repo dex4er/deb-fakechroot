@@ -1,3 +1,13 @@
+fakechroot (2.18-1) unstable; urgency=medium
+
+  * New upstream release:
+    - Works correctly with stretch and vivid. Closes: #745082, #763391,
+      #774332.
+    - Doesn't mix _BSD_SOURCE and _XOPEN_SOURCE macros. Closes: #749632.
+  * Build-Requires: debhelper >= 9.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Mon, 26 Oct 2015 22:08:24 +0100
+
 fakechroot (2.17.2-1) unstable; urgency=low
 
   * New upstream release.

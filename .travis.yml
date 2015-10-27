@@ -1,19 +1,15 @@
+sudo: required
+dist: trusty
 language: c
-before_install:
-  - sudo apt-get update -qq
-install:
-  - sudo apt-get install -qq git-buildpackage
-  - sudo apt-get install -qq colorgcc
-  - sudo apt-get install -qq debhelper dh-autoreconf
 before_script:
+  - sudo apt-get update
+  - sudo apt-get install colorgcc debhelper dh-autoreconf git-buildpackage
   - git fetch origin +upstream:upstream
   - git fetch origin +pristine-tar:pristine-tar
-script: git-buildpackage --git-builder="debuild --set-envvar=CC=$TRAVIS_CC --no-lintian -i'^\.git/|^\.gitignore$|^\.travis.yml$|^\.gbp\.conf$' -I" -uc -us && debc && lintian --dont-check-part standards-version --fail-on-warnings --color always --info ../*.changes && sudo debi
+script: 
+  - git-buildpackage --git-builder="debuild --set-envvar=CC=$TRAVIS_CC --no-lintian -i'^\.git/|^\.gitignore$|^\.travis.yml$|^\.gbp\.conf$' -I" -uc -us && debc && lintian --dont-check-part standards-version --fail-on-warnings --color always --info ../*.changes && dpkg --log=/dev/stderr --dry-run --install ../*.deb
 env:
   global:
     - TRAVIS_CC=colorgcc
     - DEB_BUILD_OPTIONS='parallel=4'
-branches:
-  only:
-    - master
-    - precise
+    - LINTIAN_PROFILE=debian
