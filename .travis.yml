@@ -3,11 +3,12 @@ dist: trusty
 language: c
 before_script:
   - sudo apt-get update
-  - sudo apt-get install -yy colorgcc debhelper dh-autoreconf git-buildpackage
+  - sudo apt-get install -yy colorgcc debhelper dh-autoreconf git-buildpackage libjemalloc1
   - git fetch origin +upstream:upstream
   - git fetch origin +pristine-tar:pristine-tar
 script: >
   gbp buildpackage --git-builder="debuild --set-envvar=CC=$TRAVIS_CC --no-lintian -i'^\.git/|^\.gitignore$|^\.travis.yml$|^\.gbp\.conf$' -I" -uc -us &&
+  cat ../*.changes &&
   debc &&
   lintian --dont-check-part standards-version --fail-on-warnings --color always --info ../*.changes &&
   sudo dpkg --install ../*.deb
