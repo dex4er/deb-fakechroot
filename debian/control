@@ -7,7 +7,7 @@ Build-Depends:
   dh-autoreconf,
   dpkg-dev (>= 1.17.14),
   libjemalloc1 <!nocheck>
-Standards-Version: 3.9.6
+Standards-Version: 3.9.8
 Homepage: https://github.com/dex4er/fakechroot
 VCS-Git: https://github.com/dex4er/deb-fakechroot.git
 VCS-Browser: https://github.com/dex4er/deb-fakechroot
