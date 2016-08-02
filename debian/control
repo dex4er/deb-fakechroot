@@ -9,8 +9,8 @@ Build-Depends:
   libjemalloc1 <!nocheck>
 Standards-Version: 3.9.8
 Homepage: https://github.com/dex4er/fakechroot
-VCS-Git: https://github.com/dex4er/deb-fakechroot.git
-VCS-Browser: https://github.com/dex4er/deb-fakechroot
+VCS-Git: https://anonscm.debian.org/git/fakechroot/fakechroot.git
+VCS-Browser: https://anonscm.debian.org/git/fakechroot/fakechroot.git
 
 Package: fakechroot
 Architecture: all
