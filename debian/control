@@ -4,7 +4,8 @@ Section: utils
 Priority: optional
 Build-Depends:
   debhelper (>= 9),
-  dh-autoreconf
+  dh-autoreconf,
+  libjemalloc1 <!nocheck>
 Standards-Version: 3.9.6
 Homepage: https://github.com/dex4er/fakechroot
 VCS-Git: https://github.com/dex4er/deb-fakechroot.git
