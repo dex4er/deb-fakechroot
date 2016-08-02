@@ -1,3 +1,11 @@
+fakechroot (2.18-1.1) unstable; urgency=medium
+
+  * non-maintainer upload
+  * avoid using debian/libfakechroot when doing arch-independent builds
+    (Closes: #806221) Thanks to Santiago Villa for the patch.
+
+ -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Tue, 02 Aug 2016 14:38:50 -0400
+
 fakechroot (2.18-1) unstable; urgency=medium
 
   * New upstream release:
