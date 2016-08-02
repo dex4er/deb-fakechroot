@@ -5,6 +5,7 @@ fakechroot (2.18-1.1) unstable; urgency=medium
     (Closes: #806221) Thanks to Santiago Villa for the patch.
   * added libjemalloc1 <!nocheck> to Build-Depends for better test suite
     coverage.
+  * packaging metadata cleanup
 
  -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Tue, 02 Aug 2016 14:38:50 -0400
 
