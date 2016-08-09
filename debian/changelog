@@ -2,7 +2,7 @@ fakechroot (2.18-1.1) unstable; urgency=medium
 
   * non-maintainer upload
   * avoid using debian/libfakechroot when doing arch-independent builds
-    (Closes: #806221) Thanks to Santiago Villa for the patch.
+    (Closes: #806221) Thanks to Santiago Vila for the patch.
   * added libjemalloc1 <!nocheck> to Build-Depends for better test suite
     coverage.
   * packaging metadata cleanup
