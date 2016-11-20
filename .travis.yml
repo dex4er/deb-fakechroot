@@ -2,8 +2,9 @@ sudo: required
 dist: trusty
 language: c
 before_script:
+  - echo 'deb http://us-central1.gce.archive.ubuntu.com/ubuntu/ xenial main universe' | sudo tee -a /etc/apt/sources.list
   - sudo apt-get update
-  - sudo apt-get install -yy colorgcc debhelper dh-autoreconf git-buildpackage libjemalloc1
+  - sudo apt-get install -yy build-essential colorgcc dpkg-dev debhelper dh-autoreconf git-buildpackage libjemalloc1
   - git fetch origin +upstream:upstream
   - git fetch origin +pristine-tar:pristine-tar
 script: >
