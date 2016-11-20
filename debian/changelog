@@ -1,4 +1,4 @@
-fakechroot (2.19-1) UNRELEASED; urgency=medium
+fakechroot (2.19-1) unstable; urgency=medium
 
   * New upstream version 2.19:
     - Prevent escaping fake chroot. Closes: #742072.
