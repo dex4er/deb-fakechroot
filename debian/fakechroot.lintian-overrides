@@ -1,3 +1,1 @@
-binary-without-manpage usr/bin/env.fakechroot
-binary-without-manpage usr/bin/ldd.fakechroot
-binary-without-manpage usr/sbin/chroot.fakechroot
+binary-without-manpage *.fakechroot

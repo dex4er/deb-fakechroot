@@ -1,4 +1,2 @@
 package-has-unnecessary-activation-of-ldconfig-trigger
 package-modifies-ld.so-search-path *.conf
-postinst-has-useless-call-to-ldconfig
-postrm-has-useless-call-to-ldconfig
