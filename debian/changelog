@@ -1,3 +1,17 @@
+fakechroot (2.19-1) UNRELEASED; urgency=medium
+
+  * New upstream version 2.19:
+    - Prevent escaping fake chroot. Closes: #742072.
+    - Can do chroot twice. Closes: #741965.
+    - Variable FAKECHROOT_EXCLUDE_PATH can contain 100 elements. Closes: #745084.
+    - Bugfixes for chroot wrapper: Closes: #741670.
+    - Bugfixes for debootstrap wrapper. Closes: #742070.
+    - Bugfixes for env wrapper. Closes: #815194.
+    - Bugfixes for fakechroot command. Closes: #840008.
+    - Bugfixes for ldd wrapper. Closes: #780759, #839873, #839962, #840007.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Sun, 20 Nov 2016 18:05:23 +0100
+
 fakechroot (2.18-1.1) unstable; urgency=medium
 
   * non-maintainer upload
