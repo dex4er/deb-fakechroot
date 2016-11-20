@@ -1,3 +1,9 @@
+fakechroot (2.19-2) unstable; urgency=medium
+
+  * Hardcode paths to prevent some subtle errors when environment is changed.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Sun, 20 Nov 2016 23:53:04 +0100
+
 fakechroot (2.19-1) unstable; urgency=medium
 
   * New upstream version 2.19:
