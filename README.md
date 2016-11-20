@@ -3,7 +3,8 @@
 
 **Home** | [Download](https://github.com/fakechroot/fakechroot/wiki/Download) | [Documentation](https://github.com/fakechroot/fakechroot/blob/master/man/fakechroot.pod) | [ChangeLog](https://github.com/fakechroot/fakechroot/blob/master/NEWS.md) | [Development](https://github.com/fakechroot/fakechroot/wiki/Development) | [ToDo](https://github.com/fakechroot/fakechroot/wiki/Todo) | [Links](https://github.com/fakechroot/fakechroot/wiki/Links)
 
-[![Build Status](https://travis-ci.org/dex4er/fakechroot.png?branch=master)](https://travis-ci.org/dex4er/fakechroot)
+[![Upstream Build Status](https://travis-ci.org/dex4er/fakechroot.png?branch=master)](https://travis-ci.org/dex4er/fakechroot)
+[![Package Build Status](https://travis-ci.org/dex4er/deb-fakechroot.png?branch=master)](https://travis-ci.org/dex4er/deb-fakechroot)
 
 
 What is it?
