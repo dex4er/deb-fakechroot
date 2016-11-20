@@ -1,6 +1,10 @@
-/autoreconf.*
+/*.debhelper
+/*.log
 /*.substvars
+/*-stamp
+/autoreconf.*
 /files
 /tmp/
+
 /fakechroot/
 /libfakechroot/
