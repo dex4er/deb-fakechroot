@@ -1,3 +1,10 @@
+fakechroot (2.19-3) unstable; urgency=high
+
+  * Correct autoconf variables for configure. The paths should be
+    compatible with non-symlinked /bin directory. Closes: #846270.
+
+ -- Piotr Roszatycki <dexter@debian.org>  Tue, 29 Nov 2016 21:05:31 +0100
+
 fakechroot (2.19-2) unstable; urgency=medium
 
   * Hardcode paths to prevent some subtle errors when environment is changed.
